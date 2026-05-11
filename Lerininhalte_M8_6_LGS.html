@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0080)file:///C:/Users/Kerstin%20Kre%C3%9F/Downloads/Lerninhalte_M8_6_LGS_print_5.html -->
+<html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Task Card – M8.6 Lineare Gleichungssysteme</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="./Lerininhalte_M8_6_LGS_files/css2" rel="stylesheet">
 <style>
   :root {
     --navy:   #1B3D50;
@@ -619,7 +619,27 @@
 
   @media print {
     body { background: white; padding: 0; }
-    .page { box-shadow: none; max-width: 100%; border-radius: 0; }
+    .page { box-shadow: none; max-width: 100%; border-radius: 0; border: none; }
+    .page::before { display: none; }
+
+    /* Elemente nie mitten durchbrechen */
+    .task-card          { page-break-inside: avoid; }
+    .method-detail-box  { page-break-inside: avoid; }
+    .theory-block       { page-break-inside: avoid; }
+    .kompetenz-item     { page-break-inside: avoid; }
+    .sol-card           { page-break-inside: avoid; }
+    .graph-case         { page-break-inside: avoid; }
+    .theory-merkkasten  { page-break-inside: avoid; }
+    .method-voraussetzung { page-break-inside: avoid; }
+
+    /* Abschnitte zusammenhalten */
+    .section            { page-break-inside: avoid; }
+
+    /* Neue Seite vor bestimmten Abschnitten */
+    .section:nth-child(5) { page-break-before: always; } /* Lösungsverfahren */
+
+    /* Header auf jeder Seite oben halten */
+    .header, .stripe    { page-break-after: avoid; }
   }
 </style>
 </head>
@@ -687,7 +707,7 @@
           </div>
           <div class="theory-box ytop">
             <div class="theory-box-title">✏️ Beispiel</div>
-            <p>Gleichung: <code style="font-family:'JetBrains Mono',monospace;font-size:12px">2x + y = 6</code><br>
+            <p>Gleichung: <code style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">2x + y = 6</code><br>
             Lösungen z. B.: (0|6), (1|4), (3|0) …<br>Alle liegen auf einer Geraden.</p>
           </div>
         </div>
@@ -740,8 +760,8 @@
           </div>
           <div class="theory-box ytop">
             <div class="theory-box-title">✏️ Beispiel</div>
-            <p>I &nbsp;<code style="font-family:'JetBrains Mono',monospace;font-size:12px">x + y = 5</code><br>
-               II <code style="font-family:'JetBrains Mono',monospace;font-size:12px">x − y = 1</code><br>
+            <p>I &nbsp;<code style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">x + y = 5</code><br>
+               II <code style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:12px">x − y = 1</code><br>
                Lösung: (3 | 2), denn 3+2=5 ✓ und 3−2=1 ✓</p>
           </div>
         </div>
@@ -763,31 +783,31 @@
         <div class="graph-row">
           <div class="graph-case">
             <svg width="90" height="80" viewBox="0 0 90 80">
-              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="5" y1="65" x2="85" y2="15" stroke="#4A9BB5" stroke-width="2.5"/>
-              <line x1="5" y1="15" x2="85" y2="65" stroke="#C8962A" stroke-width="2.5"/>
-              <circle cx="45" cy="40" r="5" fill="#F2C94C" stroke="#1B3D50" stroke-width="1.5"/>
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="5" y1="65" x2="85" y2="15" stroke="#4A9BB5" stroke-width="2.5"></line>
+              <line x1="5" y1="15" x2="85" y2="65" stroke="#C8962A" stroke-width="2.5"></line>
+              <circle cx="45" cy="40" r="5" fill="#F2C94C" stroke="#1B3D50" stroke-width="1.5"></circle>
             </svg>
             <span class="graph-case-title">Schnittpunkt</span>
             <span class="graph-case-desc"><strong>Genau eine Lösung</strong><br>Die Geraden schneiden sich<br>(verschiedene Steigungen)</span>
           </div>
           <div class="graph-case">
             <svg width="90" height="80" viewBox="0 0 90 80">
-              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="5" y1="55" x2="85" y2="20" stroke="#4A9BB5" stroke-width="2.5"/>
-              <line x1="5" y1="70" x2="85" y2="35" stroke="#C8962A" stroke-width="2.5" stroke-dasharray="5,3"/>
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="5" y1="55" x2="85" y2="20" stroke="#4A9BB5" stroke-width="2.5"></line>
+              <line x1="5" y1="70" x2="85" y2="35" stroke="#C8962A" stroke-width="2.5" stroke-dasharray="5,3"></line>
             </svg>
             <span class="graph-case-title">Echt parallel</span>
             <span class="graph-case-desc"><strong>Keine Lösung</strong><br>Die Geraden schneiden sich nicht<br>(gleiche Steigung, versch. Achsenabschnitt)</span>
           </div>
           <div class="graph-case">
             <svg width="90" height="80" viewBox="0 0 90 80">
-              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
-              <line x1="5" y1="65" x2="85" y2="20" stroke="#4A9BB5" stroke-width="4"/>
-              <line x1="5" y1="65" x2="85" y2="20" stroke="#F2C94C" stroke-width="1.5" stroke-dasharray="5,5"/>
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"></line>
+              <line x1="5" y1="65" x2="85" y2="20" stroke="#4A9BB5" stroke-width="4"></line>
+              <line x1="5" y1="65" x2="85" y2="20" stroke="#F2C94C" stroke-width="1.5" stroke-dasharray="5,5"></line>
             </svg>
             <span class="graph-case-title">Identisch</span>
             <span class="graph-case-desc"><strong>Unendlich viele Lösungen</strong><br>Beide Gleichungen beschreiben dieselbe Gerade</span>
@@ -816,14 +836,76 @@
         <div class="method-detail-body">
           <div class="method-example-col">
             <div class="example-label">Beispiel</div>
-            <div class="example-sys">I &nbsp;&nbsp;y = 2x − 1<br>II &nbsp;y = −x + 5</div>
+            <div class="example-sys">I &nbsp;&nbsp;y = x + 2<br>II &nbsp;y = −x + 4</div>
             <ol class="method-steps">
-              <li>Mindestens 2 Punkte pro Gerade bestimmen, z. B.:<br>Gerade I: (0 | −1) und (1 | 1) &nbsp;|&nbsp; Gerade II: (0 | 5) und (1 | 4).</li>
+              <li>Mindestens 2 Punkte pro Gerade bestimmen, z. B.:<br>Gerade I: (0 | 2) und (1 | 3) &nbsp;|&nbsp; Gerade II: (0 | 4) und (1 | 3).</li>
               <li>Beide Geraden ins Koordinatensystem einzeichnen.</li>
-              <li>Schnittpunkt ablesen: <strong>(2 | 3)</strong> → Lösung: x = 2, y = 3.</li>
+              <li>Schnittpunkt ablesen: <strong>(1 | 3)</strong> → Lösung: x = 1, y = 3.</li>
             </ol>
           </div>
-          <div class="method-hint-box">💡 Probe: 3 = 2·2−1 ✓ &nbsp; 3 = −2+5 ✓<br><br>⚠️ Graphisch nur näherungsweise genau – rechnerische Verfahren liefern exakte Ergebnisse.</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <!-- Koordinatensystem -->
+            <div style="background:white; border:1.5px solid var(--lblue); border-radius:8px; padding:8px;">
+              <svg viewBox="0 0 200 185" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans Mono, monospace">
+                <!-- Ursprung SVG(30,145), Maßstab 25px/Einheit -->
+                <!-- Achsen -->
+                <line x1="5" y1="145" x2="190" y2="145" stroke="#B0BEC5" stroke-width="1.2"></line>
+                <line x1="30" y1="10" x2="30" y2="170" stroke="#B0BEC5" stroke-width="1.2"></line>
+                <polygon points="190,142 196,145 190,148" fill="#B0BEC5"></polygon>
+                <polygon points="27,10 30,4 33,10" fill="#B0BEC5"></polygon>
+                <text x="192" y="149" font-size="10" fill="#B0BEC5">x</text>
+                <text x="34" y="10" font-size="10" fill="#B0BEC5">y</text>
+                <!-- Gitternetz -->
+                <g stroke="#D4E8EE" stroke-width="0.7">
+                  <line x1="55" y1="10" x2="55" y2="170"></line>
+                  <line x1="80" y1="10" x2="80" y2="170"></line>
+                  <line x1="105" y1="10" x2="105" y2="170"></line>
+                  <line x1="130" y1="10" x2="130" y2="170"></line>
+                  <line x1="155" y1="10" x2="155" y2="170"></line>
+                  <line x1="5" y1="120" x2="190" y2="120"></line>
+                  <line x1="5" y1="95" x2="190" y2="95"></line>
+                  <line x1="5" y1="70" x2="190" y2="70"></line>
+                  <line x1="5" y1="45" x2="190" y2="45"></line>
+                  <line x1="5" y1="20" x2="190" y2="20"></line>
+                  <line x1="5" y1="170" x2="190" y2="170"></line>
+                </g>
+                <!-- Tick-Marks x -->
+                <line x1="55" y1="142" x2="55" y2="148" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="80" y1="142" x2="80" y2="148" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="105" y1="142" x2="105" y2="148" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="130" y1="142" x2="130" y2="148" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="155" y1="142" x2="155" y2="148" stroke="#B0BEC5" stroke-width="1"></line>
+                <text x="55" y="158" font-size="9" fill="#5a7080" text-anchor="middle">1</text>
+                <text x="80" y="158" font-size="9" fill="#5a7080" text-anchor="middle">2</text>
+                <text x="105" y="158" font-size="9" fill="#5a7080" text-anchor="middle">3</text>
+                <text x="130" y="158" font-size="9" fill="#5a7080" text-anchor="middle">4</text>
+                <text x="155" y="158" font-size="9" fill="#5a7080" text-anchor="middle">5</text>
+                <!-- Tick-Marks y -->
+                <line x1="27" y1="120" x2="33" y2="120" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="27" y1="95" x2="33" y2="95" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="27" y1="70" x2="33" y2="70" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="27" y1="45" x2="33" y2="45" stroke="#B0BEC5" stroke-width="1"></line>
+                <line x1="27" y1="20" x2="33" y2="20" stroke="#B0BEC5" stroke-width="1"></line>
+                <text x="22" y="123" font-size="9" fill="#5a7080" text-anchor="middle">1</text>
+                <text x="22" y="98" font-size="9" fill="#5a7080" text-anchor="middle">2</text>
+                <text x="22" y="73" font-size="9" fill="#5a7080" text-anchor="middle">3</text>
+                <text x="22" y="48" font-size="9" fill="#5a7080" text-anchor="middle">4</text>
+                <text x="22" y="23" font-size="9" fill="#5a7080" text-anchor="middle">5</text>
+                <!-- Gerade I: y = x+2 → SVG_y = 145−25*(x+2) = 95−25x -->
+                <!-- x=−1→SVG(5,120), x=3.4→SVG(115,10) -->
+                <line x1="5" y1="120" x2="115" y2="10" stroke="#4A9BB5" stroke-width="2"></line>
+                <text x="117" y="12" font-size="11" fill="#4A9BB5" font-weight="bold">I</text>
+                <!-- Gerade II: y = −x+4 → SVG_y = 145−25*(−x+4) = 45+25x -->
+                <!-- x=−1→SVG(5,20), x=4→SVG(130,145) -->
+                <line x1="5" y1="20" x2="155" y2="170" stroke="#C8962A" stroke-width="2"></line>
+                <text x="140" y="168" font-size="11" fill="#C8962A" font-weight="bold">II</text>
+                <!-- Schnittpunkt (1|3) → SVG(55,70) -->
+                <circle cx="55" cy="70" r="5" fill="#F2C94C" stroke="#1B3D50" stroke-width="1.5"></circle>
+                <text x="61" y="65" font-size="10" fill="#1B3D50" font-weight="bold">(1|3)</text>
+              </svg>
+            </div>
+            <div class="method-hint-box">💡 Probe: 3 = 1+2 ✓ &nbsp; 3 = −1+4 ✓<br><br>⚠️ Graphisch nur näherungsweise genau – rechnerische Verfahren liefern exakte Ergebnisse.</div>
+          </div>
         </div>
       </div>
 
@@ -951,7 +1033,7 @@
 
         <!-- Beispiel -->
         <div style="background:white; border:2px solid var(--navy); border-radius:8px; padding:14px 16px; box-shadow:3px 3px 0 var(--lblue);">
-          <div style="font-family:'Caveat',cursive; font-size:17px; font-weight:700; color:var(--navy); margin-bottom:10px;">📌 Beispiel</div>
+          <div style="font-family:&#39;Caveat&#39;,cursive; font-size:17px; font-weight:700; color:var(--navy); margin-bottom:10px;">📌 Beispiel</div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
 
             <div>
@@ -971,7 +1053,7 @@
 
             <div>
               <div class="example-label" style="margin-bottom:4px;">Schritt 3 – Lösen (Einsetzungsverfahren)</div>
-              <p style="font-size:12px; line-height:1.7; font-family:'JetBrains Mono',monospace;">II in I: 3y + y = 20<br>4y = 20 → <strong>y = 5</strong><br>x = 3·5 = <strong>15</strong></p>
+              <p style="font-size:12px; line-height:1.7; font-family:&#39;JetBrains Mono&#39;,monospace;">II in I: 3y + y = 20<br>4y = 20 → <strong>y = 5</strong><br>x = 3·5 = <strong>15</strong></p>
             </div>
 
             <div style="grid-column:1/-1;">
@@ -1055,5 +1137,6 @@
   </div><!-- /content -->
 
 </div>
-</body>
-</html>
+
+
+</body></html>
