@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Card – M8.6 Lineare Gleichungssysteme</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 26px 36px 22px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header::after {
+    content: 'y = mx + b';
+    position: absolute;
+    right: -10px; bottom: -18px;
+    font-family: 'Caveat', cursive;
+    font-size: 80px;
+    color: rgba(255,255,255,0.06);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -18px; right: 60px;
+    width: 110px; height: 110px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.18;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .subject-badge {
+    display: inline-block;
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 38px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+  }
+
+  .header h1 span { color: var(--yellow); }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .meta-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--lblue);
+    letter-spacing: 1px;
+  }
+
+  .hours-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+  }
+
+  .stripe {
+    height: 6px;
+    background: linear-gradient(90deg, var(--yellow) 0%, var(--bluegr) 60%, var(--lblue) 100%);
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 28px 30px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section { margin-bottom: 26px; }
+
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pill-circle {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    padding: 1px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .section-label .pill {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    padding: 1px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px);
+  }
+
+  /* KOMPETENZEN */
+  .kompetenz-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+  .kompetenz-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-left: 5px solid var(--blue);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  .kompetenz-item:nth-child(2) { border-left-color: var(--yellow); }
+  .kompetenz-item:nth-child(3) { border-left-color: var(--bluegr); }
+  .k-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* THEORY */
+  .theory-block {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 20px 22px;
+    box-shadow: 3px 3px 0 var(--lblue);
+    position: relative;
+  }
+
+  .theory-block::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    border-width: 0 22px 22px 0;
+    border-style: solid;
+    border-color: transparent var(--vlblue) transparent transparent;
+  }
+
+  .theory-intro { font-size: 13.5px; line-height: 1.65; margin-bottom: 16px; }
+
+  .theory-formula-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 14px 0 10px;
+  }
+
+  .theory-formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--navy);
+    background: var(--vlblue);
+    border: 2px solid var(--blue);
+    border-radius: 8px;
+    padding: 8px 18px;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0 var(--lblue);
+  }
+
+  .theory-formula-desc { font-size: 12.5px; color: #3a5060; line-height: 1.5; }
+
+  .theory-parts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .theory-part {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--steel);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+
+  .part-sym { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; }
+  .part-sym.blue { color: var(--blue); }
+  .part-sym.yel  { color: var(--gold); }
+  .part-sym.grn  { color: #2e7d52; }
+
+  .theory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+
+  .theory-box {
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-top: 4px solid var(--blue);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .theory-box.ytop { border-top-color: var(--yellow); }
+  .theory-box-title { font-weight: 800; font-size: 13px; margin-bottom: 6px; color: var(--navy); }
+  .theory-box p { font-size: 12.5px; line-height: 1.6; }
+
+  .theory-merkkasten {
+    background: #fffbea;
+    border: 2px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 12px 14px 10px 44px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5a3e00;
+    margin-top: 16px;
+    position: relative;
+  }
+
+  .theory-merkkasten::before {
+    content: '★';
+    position: absolute;
+    top: 10px; left: 12px;
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 14px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    line-height: 22px;
+    text-align: center;
+  }
+
+  .theory-merkkasten strong {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* GRAPH CASES */
+  .graph-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 12px; }
+
+  .graph-case {
+    border: 2px solid var(--lblue);
+    border-radius: 8px;
+    background: white;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .graph-case svg { display: block; margin: 0 auto 6px; }
+  .graph-case-title { font-weight: 800; font-size: 12px; color: var(--navy); display: block; margin-bottom: 3px; }
+  .graph-case-desc  { font-size: 11px; color: #5a7080; line-height: 1.4; }
+
+  .method-voraussetzung {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2a4050;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+  }
+
+  .method-voraussetzung-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* METHOD DETAIL BOXES */
+  .method-detail-box {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-left: 6px solid var(--blue);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .method-detail-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .method-detail-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+
+  .method-detail-name {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .method-detail-sub { font-size: 12.5px; color: #4a6070; line-height: 1.45; }
+
+  .method-detail-body {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .method-example-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .example-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .example-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 8px 12px;
+    line-height: 2;
+    color: var(--navy);
+  }
+
+  .method-steps {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2a4050;
+  }
+
+  .method-steps li { padding-left: 4px; }
+
+  .inline-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--vlblue);
+    border: 1px solid var(--lblue);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--navy);
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  .method-hint-box {
+    background: #fffbea;
+    border: 1.5px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #5a3e00;
+    line-height: 1.6;
+    align-self: start;
+  }
+
+  /* METHODS */
+  .methods-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+
+  .method-box {
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 14px 12px;
+    background: white;
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--lblue);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .method-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--yellow);
+  }
+
+  .method-icon { font-size: 26px; margin-bottom: 6px; }
+  .method-name { font-weight: 800; font-size: 13px; color: var(--navy); display: block; margin-bottom: 4px; }
+  .method-desc { font-size: 12px; color: #4a6070; line-height: 1.45; }
+
+  /* STEPS */
+  .steps-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .step-item { display: flex; gap: 12px; align-items: flex-start; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    background: var(--yellow);
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 1px 1px 0 var(--gold);
+  }
+
+  .step-text { font-size: 13px; line-height: 1.6; padding-top: 2px; }
+
+  /* TASKS */
+  .tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .task-card {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .task-card.full-width { grid-column: 1 / -1; }
+
+  .task-num {
+    font-family: 'Caveat', cursive;
+    font-size: 52px;
+    color: var(--vlblue);
+    line-height: 1;
+    position: absolute;
+    right: 12px; top: 4px;
+    font-weight: 700;
+  }
+
+  .task-level {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    border: 1.5px solid currentColor;
+  }
+
+  .level-g { color: #2e7d52; background: #e8f8f0; }
+  .level-m { color: var(--blue); background: var(--vlblue); }
+  .level-e { color: var(--gold); background: #fff8e0; }
+
+  .task-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; padding-right: 40px; color: var(--navy); }
+
+  .task-body { font-size: 13px; color: #2a4050; line-height: 1.6; }
+
+  .task-body .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: block;
+    margin: 8px 0;
+    font-size: 12.5px;
+    color: var(--navy);
+  }
+
+  .task-hint {
+    margin-top: 10px;
+    padding: 7px 10px;
+    background: #fffbea;
+    border: 1.5px dashed var(--yellow);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #6e4b00;
+    line-height: 1.5;
+  }
+
+  .work-lines { margin-top: 12px; display: flex; flex-direction: column; gap: 18px; }
+  .work-line { border-bottom: 1.5px solid var(--steel); }
+
+  .coord-placeholder {
+    border: 1.5px dashed var(--steel);
+    border-radius: 6px;
+    margin-top: 10px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--vlblue);
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    color: var(--steel);
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 2.5px solid var(--navy);
+    padding: 12px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--vlblue);
+    font-family: 'Caveat', cursive;
+    font-size: 17px;
+    color: var(--navy);
+    position: relative;
+    z-index: 1;
+  }
+
+  .name-line {
+    display: inline-block;
+    width: 160px;
+    border-bottom: 2px solid var(--navy);
+    margin-left: 6px;
+    vertical-align: bottom;
+    height: 18px;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; max-width: 100%; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-top">
+      <div>
+        <div class="subject-badge">✏️ Mathematik · Jgst. 8 · Gymnasium</div>
+        <h1>Lineare<br><span>Gleichungssysteme</span></h1>
+      </div>
+      <div class="header-meta">
+        <span class="meta-chip">M 8.6</span>
+        <span class="hours-badge">⏱ ca. 10 Stunden</span>
+        <span class="meta-chip">LehrplanPLUS Bayern</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+
+    <!-- KOMPETENZEN -->
+    <div class="section">
+      <div class="section-label">🎯 Kompetenzerwartungen <span class="pill">Unterrichtsziele</span></div>
+      <ul class="kompetenz-list">
+        <li class="kompetenz-item"><span class="k-icon">📐</span><span><strong>Modellieren:</strong> Sachzusammenhänge mithilfe eines LGS beschreiben und die Vorgehensweise erläutern.</span></li>
+        <li class="kompetenz-item"><span class="k-icon">🔢</span><span><strong>Lösen &amp; Vergleichen:</strong> LGS graphisch und rechnerisch lösen; Lösungsmengen begründen; Verfahren nach Effektivität vergleichen und Ergebnisse im Sachkontext interpretieren.</span></li>
+        <li class="kompetenz-item"><span class="k-icon">💡</span><span><strong>Reflektieren:</strong> Aussagen zur Lösbarkeit und Lösungsvielfalt formulieren und veranschaulichen.</span></li>
+      </ul>
+    </div>
+
+    <!-- THEORIE: LIN. GLEICHUNG MIT 2 VARIABLEN -->
+    <div class="section">
+      <div class="section-label">📖 Lineare Gleichung mit 2 Variablen <span class="pill">Theorie</span></div>
+      <div class="theory-block">
+        <p class="theory-intro">
+          Eine <strong>lineare Gleichung mit zwei Variablen</strong> enthält zwei Unbekannte (<em>x</em> und <em>y</em>), jeweils nur in der ersten Potenz. Ihr Graph ist immer eine <strong>Gerade</strong>.<br>
+          Jedes Wertepaar (<em>x</em> | <em>y</em>), das die Gleichung erfüllt, entspricht einem Punkt auf dieser Geraden.
+        </p>
+
+        <div class="theory-formula-row">
+          <span class="theory-formula">ax + by = c</span>
+          <span class="theory-formula-desc">Allgemeine Form</span>
+        </div>
+        <div class="theory-parts">
+          <div class="theory-part"><span class="part-sym blue">a, b</span><span>Koeffizienten</span></div>
+          <div class="theory-part"><span class="part-sym yel">c</span><span>Konstante</span></div>
+          <div class="theory-part"><span class="part-sym grn">x, y</span><span>die Unbekannten</span></div>
+        </div>
+
+        <div class="theory-formula-row" style="margin-top:18px">
+          <span class="theory-formula">y = mx + b</span>
+          <span class="theory-formula-desc"><em>m</em> = Steigung, <em>b</em> = y-Achsenabschnitt.</span>
+        </div>
+
+        <div class="theory-grid">
+          <div class="theory-box">
+            <div class="theory-box-title">📈 Lösungsmenge</div>
+            <p>Jedes Paar (<em>x</em> | <em>y</em>), das die Gleichung erfüllt, ist eine Lösung. Es gibt <strong>unendlich viele</strong> – alle bilden zusammen die Gerade.</p>
+          </div>
+          <div class="theory-box ytop">
+            <div class="theory-box-title">✏️ Beispiel</div>
+            <p>Gleichung: <code style="font-family:'JetBrains Mono',monospace;font-size:12px">2x + y = 6</code><br>
+            Lösungen z. B.: (0|6), (1|4), (3|0) …<br>Alle liegen auf einer Geraden.</p>
+          </div>
+        </div>
+
+        <div class="theory-merkkasten">
+          <strong>Merksatz</strong>
+          Eine lineare Gleichung mit zwei Variablen hat immer <strong>unendlich viele</strong> Lösungen – alle Punkte, die auf der zugehörigen Geraden liegen.
+        </div>
+      </div>
+    </div>
+
+    <!-- GERADE ZEICHNEN -->
+    <div class="section">
+      <div class="section-label">📏 Gerade zeichnen <span class="pill">zur Erinnerung</span></div>
+      <div class="theory-block">
+        <ul class="steps-list">
+          <li class="step-item">
+            <span class="step-num">1</span>
+            <span class="step-text"><strong>y-Achsenabschnitt</strong> <em>b</em> als Punkt (0 | b) auf der y-Achse markieren.</span>
+          </li>
+          <li class="step-item">
+            <span class="step-num">2</span>
+            <span class="step-text"><strong>Steigung</strong> <em>m</em> anlegen: Zähler Schritte nach oben, Nenner Schritte nach rechts. Bei negativem <em>m</em>: Zähler Schritte nach <strong>unten</strong>, Nenner nach rechts.</span>
+          </li>
+          <li class="step-item">
+            <span class="step-num">3</span>
+            <span class="step-text">Zweiten Punkt markieren und beide Punkte mit dem Lineal <strong>verbinden</strong>.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- DEFINITION LGS -->
+    <div class="section">
+      <div class="section-label">📖 Lineares Gleichungssystem (LGS) <span class="pill-circle">Theorie</span></div>
+      <div class="theory-block">
+        <p class="theory-intro">
+          Ein <strong>lineares Gleichungssystem (LGS)</strong> besteht aus mehreren linearen Gleichungen, die <em>gleichzeitig</em> erfüllt sein müssen. Hier betrachten wir stets Systeme mit <strong>zwei Gleichungen und zwei Unbekannten</strong>.
+        </p>
+
+        <div class="theory-formula-row">
+          <span class="theory-formula" style="line-height:2.1">I &nbsp;&nbsp; a₁x + b₁y = c₁<br>II &nbsp; a₂x + b₂y = c₂</span>
+          <span class="theory-formula-desc">Beide Gleichungen gelten <em>gleichzeitig</em>. Die Bezeichnungen I und II helfen bei der Umformung.</span>
+        </div>
+
+        <div class="theory-grid">
+          <div class="theory-box">
+            <div class="theory-box-title">✅ Lösung eines LGS</div>
+            <p>Ein Paar (<em>x</em> | <em>y</em>) ist Lösung, wenn es <strong>beide</strong> Gleichungen gleichzeitig erfüllt. Graphisch = <strong>Schnittpunkt</strong> der Geraden.</p>
+          </div>
+          <div class="theory-box ytop">
+            <div class="theory-box-title">✏️ Beispiel</div>
+            <p>I &nbsp;<code style="font-family:'JetBrains Mono',monospace;font-size:12px">x + y = 5</code><br>
+               II <code style="font-family:'JetBrains Mono',monospace;font-size:12px">x − y = 1</code><br>
+               Lösung: (3 | 2), denn 3+2=5 ✓ und 3−2=1 ✓</p>
+          </div>
+        </div>
+
+        <div class="theory-merkkasten">
+          <strong>Merksatz</strong>
+          Eine einzelne Gleichung → unendlich viele Lösungen (eine Gerade). <br>Eine zweite Bedingung → die Lösung lässt sich auf <strong>einen Punkt</strong> einschränken.
+        </div>
+      </div>
+    </div>
+
+    <!-- LAGE ZWEIER GERADEN -->
+    <div class="section">
+      <div class="section-label">📊 Lösbarkeit eines LGS <span class="pill">Graphisch</span></div>
+      <div class="theory-block">
+        <p class="theory-intro">
+          Jede Gleichung eines LGS entspricht einer <strong>Geraden</strong> im Koordinatensystem. Wie viele Lösungen das LGS hat, hängt davon ab, wie die beiden Geraden zueinander liegen:
+        </p>
+        <div class="graph-row">
+          <div class="graph-case">
+            <svg width="90" height="80" viewBox="0 0 90 80">
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="5" y1="65" x2="85" y2="15" stroke="#4A9BB5" stroke-width="2.5"/>
+              <line x1="5" y1="15" x2="85" y2="65" stroke="#C8962A" stroke-width="2.5"/>
+              <circle cx="45" cy="40" r="5" fill="#F2C94C" stroke="#1B3D50" stroke-width="1.5"/>
+            </svg>
+            <span class="graph-case-title">Schnittpunkt</span>
+            <span class="graph-case-desc"><strong>Genau eine Lösung</strong><br>Die Geraden schneiden sich<br>(verschiedene Steigungen)</span>
+          </div>
+          <div class="graph-case">
+            <svg width="90" height="80" viewBox="0 0 90 80">
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="5" y1="55" x2="85" y2="20" stroke="#4A9BB5" stroke-width="2.5"/>
+              <line x1="5" y1="70" x2="85" y2="35" stroke="#C8962A" stroke-width="2.5" stroke-dasharray="5,3"/>
+            </svg>
+            <span class="graph-case-title">Echt parallel</span>
+            <span class="graph-case-desc"><strong>Keine Lösung</strong><br>Die Geraden schneiden sich nicht<br>(gleiche Steigung, versch. Achsenabschnitt)</span>
+          </div>
+          <div class="graph-case">
+            <svg width="90" height="80" viewBox="0 0 90 80">
+              <line x1="5" y1="75" x2="85" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="45" y1="5" x2="45" y2="75" stroke="#B0BEC5" stroke-width="1"/>
+              <line x1="5" y1="65" x2="85" y2="20" stroke="#4A9BB5" stroke-width="4"/>
+              <line x1="5" y1="65" x2="85" y2="20" stroke="#F2C94C" stroke-width="1.5" stroke-dasharray="5,5"/>
+            </svg>
+            <span class="graph-case-title">Identisch</span>
+            <span class="graph-case-desc"><strong>Unendlich viele Lösungen</strong><br>Beide Gleichungen beschreiben dieselbe Gerade</span>
+          </div>
+        </div>
+        <div class="theory-merkkasten">
+          <strong>Merksatz</strong>
+          Ein LGS mit zwei Unbekannten hat entweder <strong>genau eine</strong> Lösung (Schnittpunkt), <strong>keine</strong> Lösung (Geraden echt parallel) oder <strong>unendlich viele</strong> Lösungen (Geraden identisch).
+        </div>
+      </div>
+    </div>
+
+    <!-- LÖSUNGSVERFAHREN -->
+    <div class="section">
+      <div class="section-label">🔧 Lösungsverfahren <span class="pill">Schritt für Schritt</span></div>
+
+      <!-- 1. GRAPHISCH -->
+      <div class="method-detail-box" style="border-left-color: #4A9BB5;">
+        <div class="method-detail-header">
+          <span class="method-detail-icon">📊</span>
+          <div>
+            <div class="method-detail-name">1 · Graphisches Verfahren</div>
+            <div class="method-detail-sub">Beide Geraden zeichnen – der Schnittpunkt ist die Lösung.</div>
+          </div>
+        </div>
+        <div class="method-detail-body">
+          <div class="method-example-col">
+            <div class="example-label">Beispiel</div>
+            <div class="example-sys">I &nbsp;&nbsp;y = 2x − 1<br>II &nbsp;y = −x + 5</div>
+            <ol class="method-steps">
+              <li>Mindestens 2 Punkte pro Gerade bestimmen, z. B.:<br>Gerade I: (0 | −1) und (1 | 1) &nbsp;|&nbsp; Gerade II: (0 | 5) und (1 | 4).</li>
+              <li>Beide Geraden ins Koordinatensystem einzeichnen.</li>
+              <li>Schnittpunkt ablesen: <strong>(2 | 3)</strong> → Lösung: x = 2, y = 3.</li>
+            </ol>
+          </div>
+          <div class="method-hint-box">💡 Probe: 3 = 2·2−1 ✓ &nbsp; 3 = −2+5 ✓<br><br>⚠️ Graphisch nur näherungsweise genau – rechnerische Verfahren liefern exakte Ergebnisse.</div>
+        </div>
+      </div>
+
+      <!-- 2. GLEICHSETZUNGSVERFAHREN -->
+      <div class="method-detail-box" style="border-left-color: #C8962A;">
+        <div class="method-detail-header">
+          <span class="method-detail-icon">🟰</span>
+          <div>
+            <div class="method-detail-name">2 · Gleichsetzungsverfahren</div>
+            <div class="method-detail-sub">Beide Gleichungen nach derselben Variablen auflösen und gleichsetzen.</div>
+          </div>
+        </div>
+        <div class="method-detail-body">
+          <div class="method-example-col">
+            <div class="example-label">Beispiel</div>
+            <div class="example-sys">I &nbsp;&nbsp;y = 2x + 1<br>II &nbsp;y = −x + 7</div>
+            <div class="method-voraussetzung"><span class="method-voraussetzung-label">Voraussetzung:</span> Beide Gleichungen sind bereits nach derselben Variablen, meist y, aufgelöst.</div>
+            <ol class="method-steps">
+              <li>Rechte Seiten gleichsetzen:<br><code class="inline-code">2x + 1 = −x + 7</code></li>
+              <li>Nach x auflösen:<br><code class="inline-code">3x = 6 &nbsp;→&nbsp; x = 2</code></li>
+              <li>x in eine der Gleichungen einsetzen:<br><code class="inline-code">y = 2·2 + 1 = 5</code></li>
+              <li>Lösung: <strong>x = 2, y = 5</strong></li>
+            </ol>
+          </div>
+          <div class="method-hint-box">💡 Besonders geeignet, wenn beide Gleichungen bereits nach derselben Variablen aufgelöst sind.</div>
+        </div>
+      </div>
+
+      <!-- 3. EINSETZUNGSVERFAHREN -->
+      <div class="method-detail-box" style="border-left-color: #5AAEC8;">
+        <div class="method-detail-header">
+          <span class="method-detail-icon">🔁</span>
+          <div>
+            <div class="method-detail-name">3 · Einsetzungsverfahren</div>
+            <div class="method-detail-sub">Eine Variable in einer Gleichung freistellen, in die andere Gleichung einsetzen.</div>
+          </div>
+        </div>
+        <div class="method-detail-body">
+          <div class="method-example-col">
+            <div class="example-label">Beispiel</div>
+            <div class="example-sys">I &nbsp;&nbsp;y = 3x + 2<br>II &nbsp;2x + y = 11</div>
+            <div class="method-voraussetzung"><span class="method-voraussetzung-label">Voraussetzung:</span> <span style="white-space:nowrap">Eine Variable ist freigestellt, z. B. Gl. I: <code class="inline-code">y = 3x + 2</code></span></div>
+            <ol class="method-steps">
+              <li>Ausdruck für y in Gleichung II einsetzen:<br><code class="inline-code">2x + (3x + 2) = 11</code></li>
+              <li>Zusammenfassen und nach x lösen:<br><code class="inline-code">5x + 2 = 11 &nbsp;→&nbsp; x = 1,8</code></li>
+              <li>x in eine der Gleichungen einsetzen:<br><code class="inline-code">y = 3·1,8 + 2 = 7,4</code></li>
+              <li>Lösung: <strong>x = 1,8, y = 7,4</strong></li>
+            </ol>
+          </div>
+          <div class="method-hint-box">💡 Besonders geeignet, wenn eine Variable bereits freigestellt ist oder sich leicht freistellen lässt.</div>
+        </div>
+      </div>
+
+      <!-- 4. ADDITIONSVERFAHREN -->
+      <div class="method-detail-box" style="border-left-color: #F2C94C;">
+        <div class="method-detail-header">
+          <span class="method-detail-icon">➕</span>
+          <div>
+            <div class="method-detail-name">4 · Additionsverfahren</div>
+            <div class="method-detail-sub">Gleichungen so multiplizieren, dass sich beim Addieren eine Variable aufhebt.</div>
+          </div>
+        </div>
+        <div class="method-detail-body">
+          <div class="method-example-col">
+            <div class="example-label">Beispiel</div>
+            <div class="example-sys">I &nbsp;&nbsp;3x + 2y = 12<br>II &nbsp;x − 2y = 4</div>
+            <div class="method-voraussetzung"><span class="method-voraussetzung-label">Voraussetzung:</span> Zwei Koeffizienten (hier +2 und −2) heben sich auf → direkt addieren möglich.</div>
+            <ol class="method-steps">
+              <li>I + II:<br><code class="inline-code">(3x + 2y) + (x − 2y) = 12 + 4</code><br><code class="inline-code">4x = 16 &nbsp;→&nbsp; x = 4</code></li>
+              <li>x in eine der Gleichungen einsetzen:<br><code class="inline-code">3·4 + 2y = 12 &nbsp;→&nbsp; 2y = 0 &nbsp;→&nbsp; y = 0</code></li>
+              <li>Lösung: <strong>x = 4, y = 0</strong></li>
+            </ol>
+          </div>
+          <div class="method-hint-box">💡 Falls sich keine Variable direkt aufhebt: Gleichung mit einem geeigneten Faktor multiplizieren, z. B. I · 2, damit die Koeffizienten gleich groß (aber entgegengesetzt) werden.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PROBLEMLÖSEN -->
+    <div class="section">
+      <div class="section-label">🧩 Problemlösen mit Gleichungen <span class="pill">Vorgehen</span></div>
+      <div class="theory-block">
+
+        <p class="theory-intro">
+          Viele Sachprobleme lassen sich mit einem LGS lösen. Dabei hilft ein <strong>strukturiertes Vorgehen in 4 Schritten</strong>:
+        </p>
+
+        <!-- 4 Schritte -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+
+          <div style="background:var(--vlblue); border:2px solid var(--lblue); border-top:4px solid var(--blue); border-radius:8px; padding:12px 14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span class="step-num" style="flex-shrink:0;">1</span>
+              <span style="font-weight:800; font-size:13px; color:var(--navy);">Verstehen &amp; benennen</span>
+            </div>
+            <p style="font-size:12.5px; line-height:1.55;">Aufgabe sorgfältig lesen. <strong>Unbekannte festlegen</strong> und mit Variablen benennen, z. B. <em>x</em> = Preis Produkt A, <em>y</em> = Preis Produkt B.</p>
+          </div>
+
+          <div style="background:var(--vlblue); border:2px solid var(--lblue); border-top:4px solid var(--yellow); border-radius:8px; padding:12px 14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span class="step-num" style="flex-shrink:0;">2</span>
+              <span style="font-weight:800; font-size:13px; color:var(--navy);">Gleichungen aufstellen</span>
+            </div>
+            <p style="font-size:12.5px; line-height:1.55;">Sachaussagen in <strong>mathematische Gleichungen</strong> übersetzen. Jede Bedingung aus der Aufgabe liefert eine Gleichung.</p>
+          </div>
+
+          <div style="background:var(--vlblue); border:2px solid var(--lblue); border-top:4px solid var(--bluegr); border-radius:8px; padding:12px 14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span class="step-num" style="flex-shrink:0;">3</span>
+              <span style="font-weight:800; font-size:13px; color:var(--navy);">LGS lösen</span>
+            </div>
+            <p style="font-size:12.5px; line-height:1.55;">Geeignetes Verfahren wählen und das LGS <strong>rechnerisch lösen</strong>.</p>
+          </div>
+
+          <div style="background:var(--vlblue); border:2px solid var(--lblue); border-top:4px solid var(--gold); border-radius:8px; padding:12px 14px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span class="step-num" style="flex-shrink:0;">4</span>
+              <span style="font-weight:800; font-size:13px; color:var(--navy);">Antwort und Probe am Text durchführen</span>
+            </div>
+            <p style="font-size:12.5px; line-height:1.55;">Ergebnis in <strong>vollständigem Satz</strong> formulieren und am Aufgabentext überprüfen: Erfüllt die Lösung alle Bedingungen der Aufgabe?</p>
+          </div>
+
+        </div>
+
+        <!-- Beispiel -->
+        <div style="background:white; border:2px solid var(--navy); border-radius:8px; padding:14px 16px; box-shadow:3px 3px 0 var(--lblue);">
+          <div style="font-family:'Caveat',cursive; font-size:17px; font-weight:700; color:var(--navy); margin-bottom:10px;">📌 Beispiel</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+
+            <div>
+              <div class="example-label" style="margin-bottom:4px;">Aufgabe</div>
+              <p style="font-size:12.5px; line-height:1.6;">Zwei Zahlen haben die Summe 20. Die größere ist dreimal so groß wie die kleinere. Wie heißen die Zahlen?</p>
+            </div>
+
+            <div>
+              <div class="example-label" style="margin-bottom:4px;">Schritt 1 – Variablen</div>
+              <p style="font-size:12.5px; line-height:1.6;"><em>x</em> = größere Zahl &nbsp;|&nbsp; <em>y</em> = kleinere Zahl</p>
+            </div>
+
+            <div>
+              <div class="example-label" style="margin-bottom:4px;">Schritt 2 – LGS aufstellen</div>
+              <div class="example-sys" style="font-size:12px; line-height:2;">I &nbsp;&nbsp;x + y = 20<br>II &nbsp;x = 3y</div>
+            </div>
+
+            <div>
+              <div class="example-label" style="margin-bottom:4px;">Schritt 3 – Lösen (Einsetzungsverfahren)</div>
+              <p style="font-size:12px; line-height:1.7; font-family:'JetBrains Mono',monospace;">II in I: 3y + y = 20<br>4y = 20 → <strong>y = 5</strong><br>x = 3·5 = <strong>15</strong></p>
+            </div>
+
+            <div style="grid-column:1/-1;">
+              <div class="example-label" style="margin-bottom:4px;">Schritt 4 – Antwort und Probe am Text</div>
+              <p style="font-size:12.5px; line-height:1.6;"><strong>Die Zahlen sind 15 und 5.</strong><br>Probe am Text: Summe: 15 + 5 = 20 ✓ &nbsp; Dreimal so groß: 15 = 3 · 5 ✓</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="theory-merkkasten" style="margin-top:14px;">
+          <strong>Tipp</strong> Immer zuerst die Variablen klar definieren und ohne Einheiten rechnen – und am Ende das Ergebnis auf den Sachkontext beziehen (Einheiten, Plausibilität).
+        </div>
+
+      </div>
+    </div>
+
+    <!-- AUFGABEN -->
+    <div class="section">
+      <div class="section-label">✍️ Aufgaben <span class="pill">Üben</span></div>
+      <div class="tasks-grid">
+
+        <div class="task-card">
+          <span class="task-num">1</span>
+          <div class="task-level level-g">Grundlegend</div>
+          <div class="task-title">Graphische Lösung</div>
+          <div class="task-body">
+            Zeichne beide Geraden in ein Koordinatensystem und lies den Schnittpunkt ab.
+            <code class="formula">y = 2x − 1<br>y = −x + 5</code>
+            <div class="coord-placeholder">Koordinatensystem</div>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <span class="task-num">2</span>
+          <div class="task-level level-g">Grundlegend</div>
+          <div class="task-title">Einsetzungsverfahren</div>
+          <div class="task-body">
+            Löse rechnerisch. Notiere jeden Umformungsschritt.
+            <code class="formula">y = 3x + 2<br>2x + y = 11</code>
+            <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <span class="task-num">3</span>
+          <div class="task-level level-m">Mittel</div>
+          <div class="task-title">Lösbarkeit untersuchen</div>
+          <div class="task-body">
+            Hat das LGS genau eine, keine oder unendlich viele Lösungen? Begründe graphisch und rechnerisch.
+            <code class="formula">2x + 4y = 8<br>x + 2y = 5</code>
+            <div class="task-hint">💡 Vergleiche Steigungen und y-Achsenabschnitte!</div>
+          </div>
+        </div>
+
+        <div class="task-card">
+          <span class="task-num">4</span>
+          <div class="task-level level-m">Mittel</div>
+          <div class="task-title">Sachaufgabe</div>
+          <div class="task-body">
+            Lena und Tom verdienen zusammen 2 400 € im Monat. Lena verdient 200 € mehr als Tom. Wie viel verdient jede Person?
+            <div class="task-hint">📝 Definiere zuerst Variablen, stelle dann ein LGS auf und löse es mit einem Verfahren deiner Wahl.</div>
+            <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+          </div>
+        </div>
+
+        <div class="task-card full-width">
+          <span class="task-num">5</span>
+          <div class="task-level level-e">Erweiternd</div>
+          <div class="task-title">Verfahren vergleichen &amp; begründen</div>
+          <div class="task-body">
+            Löse das LGS auf <em>zwei verschiedene Arten</em> (Einsetzungsverfahren und Additionsverfahren). Welches Verfahren ist für dieses LGS effektiver? Begründe deine Entscheidung schriftlich.
+            <code class="formula">3x − y = 7 &nbsp;&nbsp;&nbsp;&nbsp; x + 2y = 0</code>
+            <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+</div>
+</body>
+</html>
