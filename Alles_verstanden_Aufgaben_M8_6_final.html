@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alles verstanden? – Aufgaben M8.6</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: var(--navy);
+    padding: 26px 36px 22px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -18px; right: 60px;
+    width: 110px; height: 110px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.18;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .subject-badge {
+    display: inline-block;
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 38px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+  }
+
+  .header h1 span { color: var(--yellow); }
+
+  .stunden-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+    flex-shrink: 0;
+  }
+
+  .stripe {
+    height: 6px;
+    background: linear-gradient(90deg, var(--yellow) 0%, var(--bluegr) 60%, var(--lblue) 100%);
+  }
+
+  .content {
+    padding: 24px 28px 36px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .section-label .pill {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    padding: 1px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px);
+  }
+
+  /* TASK GRID – gleich wie Wissensspeicher */
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .task-card {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .task-card.full-width { grid-column: 1 / -1; }
+
+  /* Große Hintergrund-Zahl oben rechts */
+  .task-num {
+    font-family: 'Caveat', cursive;
+    font-size: 52px;
+    color: var(--vlblue);
+    line-height: 1;
+    position: absolute;
+    right: 12px;
+    top: 4px;
+    font-weight: 700;
+  }
+
+  .task-level {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    border: 1.5px solid currentColor;
+  }
+
+  .level-g { color: #2e7d52; background: #e8f8f0; }
+  .level-m { color: var(--blue); background: var(--vlblue); }
+  .level-e { color: var(--gold); background: #fff8e0; }
+
+  .task-title {
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-right: 40px;
+    color: var(--navy);
+  }
+
+  .task-body {
+    font-size: 13px;
+    color: #2a4050;
+    line-height: 1.6;
+  }
+
+  .task-body .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: block;
+    margin: 8px 0;
+    font-size: 12.5px;
+    color: var(--navy);
+  }
+
+  .task-hint {
+    margin-top: 10px;
+    padding: 7px 10px;
+    background: #fffbea;
+    border: 1.5px dashed var(--yellow);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #6e4b00;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .tasks-grid { grid-template-columns: 1fr; }
+    .task-card.full-width { grid-column: 1; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; border: none; max-width: 100%; }
+    .page::before { display: none; }
+    .task-card { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-top">
+      <div>
+        <div class="subject-badge">✅ Mathematik · Jgst. 8 · M8.6</div>
+        <h1>Alles<br><span>verstanden?</span></h1>
+      </div>
+      <div class="stunden-badge">🎯 Stunde 10 · Aufgaben</div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+
+    <div class="section-label">✍️ Aufgaben <span class="pill">Zeig was du kannst</span></div>
+
+    <div class="tasks-grid">
+
+      <!-- 1 -->
+      <div class="task-card">
+        <span class="task-num">1</span>
+        <div class="task-level level-g">Grundlegend</div>
+        <div class="task-title">Graphische Lösung</div>
+        <div class="task-body">
+          Zeichne beide Geraden in ein Koordinatensystem und lies den Schnittpunkt ab.
+          <code class="formula">y = 2x − 1<br>x + y = 5</code>
+          <div class="task-hint">💡 Forme zuerst die zweite Gleichung in die Form y = mx + t um!</div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="task-card">
+        <span class="task-num">2</span>
+        <div class="task-level level-g">Grundlegend</div>
+        <div class="task-title">Einsetzungsverfahren</div>
+        <div class="task-body">
+          Löse rechnerisch. Notiere jeden Umformungsschritt.
+          <code class="formula">y = 3x + 2<br>2x + y = 11</code>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="task-card">
+        <span class="task-num">3</span>
+        <div class="task-level level-m">Mittel</div>
+        <div class="task-title">Lösbarkeit untersuchen</div>
+        <div class="task-body">
+          Hat das LGS genau eine, keine oder unendlich viele Lösungen? Begründe.
+          <code class="formula">2x + 4y = 8<br>x + 2y = 5</code>
+          <div class="task-hint">💡 Forme beide Gleichungen um und vergleiche Steigungen und y-Achsenabschnitte!</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="task-card">
+        <span class="task-num">4</span>
+        <div class="task-level level-m">Mittel</div>
+        <div class="task-title">Sachaufgabe</div>
+        <div class="task-body">
+          Lena und Tom verdienen zusammen 2 400 € im Monat. Lena verdient 200 € mehr als Tom. Wie viel verdient jede Person?
+          <div class="task-hint">📝 Variablen definieren → LGS aufstellen → lösen → Antwortsatz und Probe am Text.</div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="task-card full-width">
+        <span class="task-num">5</span>
+        <div class="task-level level-e">Erweiternd</div>
+        <div class="task-title">Verfahren vergleichen & begründen</div>
+        <div class="task-body">
+          Löse das LGS auf <em>zwei verschiedene Arten</em> (Einsetzungsverfahren und Additionsverfahren). Welches Verfahren ist für dieses LGS effektiver? Begründe deine Entscheidung schriftlich.
+          <code class="formula">3x − y = 7 &nbsp;&nbsp;&nbsp;&nbsp; x + 2y = 0</code>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

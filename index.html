@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M8.6 – Lineare Gleichungssysteme</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--navy);
+    padding: 40px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(168,212,226,0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .blob { position: absolute; border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%; opacity: 0.10; pointer-events: none; }
+  .blob1 { width:180px; height:180px; background:var(--yellow); top:-50px; left:-30px; }
+  .blob2 { width:130px; height:130px; background:var(--bluegr); bottom:-30px; right:50px; }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .hero-klass {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.12);
+    border: 1.5px solid var(--yellow);
+    border-radius: 6px;
+    padding: 3px 14px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--yellow); }
+  .hero-sub { font-size: 14px; color: var(--lblue); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+  .stripe { height: 6px; background: linear-gradient(90deg, var(--yellow) 0%, var(--bluegr) 50%, var(--lblue) 100%); }
+
+  .main { background: var(--vlblue); padding: 32px 20px 60px; min-height: 100vh; }
+  .container { max-width: 860px; margin: 0 auto; }
+
+  /* ALWAYS AVAILABLE */
+  .always-box {
+    background: var(--navy);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 5px 5px 0 var(--gold);
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .always-header { padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+
+  .always-title { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--yellow); }
+
+  .always-body { background: var(--paper); padding: 16px 20px; }
+
+  .always-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--navy);
+    box-shadow: 3px 3px 0 var(--steel);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .always-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--steel); }
+  .always-btn-icon { font-size: 26px; flex-shrink: 0; }
+  .always-btn-text strong { display: block; font-size: 15px; font-weight: 800; color: var(--navy); }
+  .always-btn-text span { font-size: 12px; color: #4a6070; line-height: 1.4; }
+  .always-btn-arrow { margin-left: auto; font-size: 18px; color: var(--steel); flex-shrink: 0; }
+
+  /* STUNDEN */
+  .stunde-section { margin-bottom: 24px; }
+
+  .stunde-label { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+
+  .stunde-num {
+    background: var(--navy);
+    color: white;
+    font-family: 'Caveat', cursive;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .stunde-title { font-family: 'Caveat', cursive; font-size: 20px; font-weight: 700; color: var(--navy); }
+
+  .stunde-line { flex: 1; height: 2px; min-width: 20px; background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px); }
+
+  /* CARDS */
+  .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+
+  .mat-card {
+    background: var(--paper);
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--navy);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  .mat-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--navy); }
+
+  .mat-card-top {
+    padding: 14px 16px 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mat-card-top::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .mat-icon { font-size: 26px; position: relative; z-index: 1; }
+  .mat-title { font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; color: white; line-height: 1.2; position: relative; z-index: 1; }
+  .mat-badge { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 1px 8px; color: white; display: inline-block; position: relative; z-index: 1; }
+
+  .mat-card-body { padding: 12px 16px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; background: white; }
+  .mat-desc { font-size: 12px; line-height: 1.55; color: #3a5060; flex: 1; }
+
+  .bonus-label { font-size: 10px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+
+  .mat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 2px solid var(--navy);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--navy);
+    background: var(--yellow);
+    box-shadow: 2px 2px 0 var(--navy);
+    text-decoration: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .mat-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--navy); }
+
+  .footer { background: var(--navy); padding: 18px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.5px; }
+  .footer span { color: var(--yellow); }
+
+  @media (max-width: 500px) { .cards-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="hero-inner">
+    <div class="hero-klass">Mathematik · Klasse 8 · M8.6</div>
+    <h1>Lineare<br><span>Gleichungssysteme</span></h1>
+    <p class="hero-sub">Hier findest du alle Materialien – geordnet nach Stunden.</p>
+  </div>
+</div>
+
+<div class="stripe"></div>
+
+<div class="main">
+<div class="container">
+
+  <!-- WISSENSSPEICHER -->
+  <div class="always-box">
+    <div class="always-header">
+      <span style="font-size:26px;">📖</span>
+      <span class="always-title">Wissensspeicher – immer verfügbar</span>
+    </div>
+    <div class="always-body">
+      <a class="always-btn" href="Lerninhalte_M8_6_LGS_print.html" target="_blank">
+        <span class="always-btn-icon">📋</span>
+        <span class="always-btn-text">
+          <strong>Wissensspeicher M8.6</strong>
+          <span>Alle Theorie, Verfahren und Definitionen zum Kapitel – jederzeit zum Nachschlagen</span>
+        </span>
+        <span class="always-btn-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- STUNDE 1 -->
+  <div class="stunde-section">
+    <div class="stunde-label">
+      <span class="stunde-num">Stunde 1</span>
+      <span class="stunde-title">Lineare Gleichungen mit 2 Variablen</span>
+      <span class="stunde-line"></span>
+    </div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">📝</span>
+          <div class="mat-title">Arbeitsblatt Skilager</div>
+          <span class="mat-badge">Stunden 1 & 2</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Aufträge 1–4 in Stunde 1, Auftrag 5 in Stunde 2 bearbeiten.</p>
+          <a class="mat-btn" href="M_8_6_1_AB_Lineare_Gleichungen_mit_2_Variablen.pdf" target="_blank">📄 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--gold)">
+          <span class="mat-icon">⭐</span>
+          <div class="mat-title">Bonus: Allgemeine Form</div>
+          <span class="mat-badge">Stunde 1 · Für Schnelle</span>
+        </div>
+        <div class="mat-card-body">
+          <div class="bonus-label">🚀 Challenge enthalten</div>
+          <p class="mat-desc">Allgemeine Form ax + by = c in y = mx + t überführen und m und t ablesen.</p>
+          <a class="mat-btn" href="Bonusaufgabe_Std1_AllgForm.html" target="_blank">⭐ Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STUNDE 2 -->
+  <div class="stunde-section">
+    <div class="stunde-label">
+      <span class="stunde-num">Stunde 2</span>
+      <span class="stunde-title">LGS & Graphisches Verfahren</span>
+      <span class="stunde-line"></span>
+    </div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--navy)">
+          <span class="mat-icon">📊</span>
+          <div class="mat-title">Einstiegsbeispiel<br>Graphisches Verfahren</div>
+          <span class="mat-badge">Stunde 2</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Schritt für Schritt: LGS graphisch lösen – Umformung, Punkte, Schnittpunkt ablesen.</p>
+          <a class="mat-btn" href="Einstiegsbeispiel_Std2_graph.html" target="_blank">📊 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--bluegr)">
+          <span class="mat-icon">📱</span>
+          <div class="mat-title">GeoGebra<br>Graphisches Verfahren</div>
+          <span class="mat-badge">Stunde 2 · Interaktiv</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">LGS graphisch üben und selbst kontrollieren – Geraden einstellen, Schnittpunkt bestimmen.</p>
+          <a class="mat-btn" href="https://www.geogebra.org/m/njdgpvtt" target="_blank">📐 GeoGebra →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--gold)">
+          <span class="mat-icon">⭐</span>
+          <div class="mat-title">Bonus: Rückwärtsaufgaben</div>
+          <span class="mat-badge">Stunde 2 · Für Schnelle</span>
+        </div>
+        <div class="mat-card-body">
+          <div class="bonus-label">🚀 Challenge enthalten</div>
+          <p class="mat-desc">Finde zwei Gleichungen für S(2|3) und ein LGS ohne Schnittpunkt – graphisch begründen.</p>
+          <a class="mat-btn" href="Bonusaufgabe_Std2_graph.html" target="_blank">⭐ Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STUNDE 3 -->
+  <div class="stunde-section">
+    <div class="stunde-label">
+      <span class="stunde-num">Stunde 3</span>
+      <span class="stunde-title">Lösbarkeit – Die 3 Fälle</span>
+      <span class="stunde-line"></span>
+    </div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--bluegr)">
+          <span class="mat-icon">📱</span>
+          <div class="mat-title">GeoGebra<br>Lösbarkeit erkunden</div>
+          <span class="mat-badge">Stunde 3 · Interaktiv</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Schieberegler bewegen und beobachten: wann schneiden sich Geraden, wann sind sie echt parallel, wann identisch?</p>
+          <a class="mat-btn" href="https://www.geogebra.org/m/hwnkggt5" target="_blank">📐 GeoGebra →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--gold)">
+          <span class="mat-icon">⭐</span>
+          <div class="mat-title">Bonus: Anzahl der Lösungen</div>
+          <span class="mat-badge">Stunde 3 · Für Schnelle</span>
+        </div>
+        <div class="mat-card-body">
+          <div class="bonus-label">🚀 Challenge enthalten</div>
+          <p class="mat-desc">Umformen und begründen: Wie viele Lösungen hat das LGS? Challenge: ax + by = 0 allgemein.</p>
+          <a class="mat-btn" href="Bonusaufgabe_Std3_Loesbarkeit.html" target="_blank">⭐ Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STUNDE 10 -->
+  <div class="stunde-section">
+    <div class="stunde-label">
+      <span class="stunde-num">Stunde 10</span>
+      <span class="stunde-title">Selbstkontrolle</span>
+      <span class="stunde-line"></span>
+    </div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">✏️</span>
+          <div class="mat-title">Alles verstanden?<br>Aufgaben</div>
+          <span class="mat-badge">Stunde 10 · Aufgaben</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">5 Aufgaben zum gesamten Kapitel – Lösungen ins Heft schreiben.</p>
+          <a class="mat-btn" href="Alles_verstanden_Aufgaben_M8_6_final.html" target="_blank">✏️ Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--navy)">
+          <span class="mat-icon">✅</span>
+          <div class="mat-title">Alles verstanden?<br>Lösungen aufklappbar</div>
+          <span class="mat-badge">Stunde 10 · Selbstkontrolle</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">5 Aufgaben mit gestuften Tipps und aufklappbaren Lösungen – zum Selbst-Kontrollieren.</p>
+          <a class="mat-btn" href="Alles_verstanden_Aufgaben_M8_6_Lösungen_final.html" target="_blank">✅ Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  Mathematik · Jahrgangsstufe 8 · <span>M8.6 Lineare Gleichungssysteme</span>
+</div>
+
+</body>
+</html>
