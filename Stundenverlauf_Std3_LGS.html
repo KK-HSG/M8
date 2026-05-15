@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stundenplanung – Stunde 3 – M8.6 LGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+  }
+
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: var(--navy);
+    padding: 22px 32px 18px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -18px; right: 50px;
+    width: 100px; height: 100px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.15;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .header h1 span { color: var(--yellow); }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .meta-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--lblue);
+    letter-spacing: 1px;
+  }
+
+  .stunden-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+  }
+
+  .stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--yellow), var(--bluegr), var(--lblue));
+  }
+
+  .content {
+    padding: 24px 28px 36px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lernziele-box {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-left: 6px solid var(--yellow);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .lz-title {
+    font-family: 'Caveat', cursive;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .lz-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+
+  .lz-list li {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+
+  .lz-dot {
+    flex-shrink: 0;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: 2px solid var(--gold);
+    margin-top: 5px;
+  }
+
+  .sec-label {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    margin-top: 6px;
+  }
+
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px);
+  }
+
+  .phase {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--steel);
+    overflow: hidden;
+  }
+
+  .phase-header {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: stretch;
+  }
+
+  .phase-num {
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    gap: 2px;
+  }
+
+  .phase-num-text {
+    font-family: 'Caveat', cursive;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--lblue);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .phase-num-title {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .phase-title-area {
+    background: var(--vlblue);
+    padding: 12px 16px;
+    border-left: 2px solid var(--lblue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .phase-title { font-weight: 800; font-size: 14px; color: var(--navy); }
+  .phase-subtitle { font-size: 12px; color: #4a6070; font-style: italic; }
+
+  .phase-time {
+    background: var(--vlblue);
+    border-left: 2px solid var(--lblue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    gap: 2px;
+  }
+
+  .phase-time-num {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+
+  .phase-time-unit {
+    font-size: 9px;
+    color: var(--steel);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .phase-body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1.5px solid var(--vlblue);
+  }
+
+  .phase-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .phase-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+  .mat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  .mat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1.5px solid currentColor;
+  }
+
+  .mat-chip.sf  { color: var(--blue);  background: var(--vlblue); }
+  .mat-chip.mat { color: var(--gold);  background: #fff8e0; }
+  .mat-chip.dig { color: #2e7d52;      background: #e8f8f0; }
+  .mat-chip.ws  { color: var(--navy);  background: var(--lblue); }
+
+  code.ic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--vlblue);
+    border: 1px solid var(--lblue);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  .diff-box {
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin-top: 4px;
+  }
+
+  .ha-box {
+    background: #fffbea;
+    border: 2px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 12px 16px 10px 44px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5a3e00;
+    position: relative;
+  }
+
+  .ha-box::before {
+    content: '★';
+    position: absolute;
+    top: 10px; left: 12px;
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 14px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    line-height: 22px;
+    text-align: center;
+  }
+
+  .mat-overview {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--steel);
+    overflow: hidden;
+  }
+
+  .mat-overview-header {
+    background: var(--navy);
+    padding: 10px 16px;
+    font-family: 'Caveat', cursive;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .mat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .mat-item {
+    padding: 12px 16px;
+    border-bottom: 1.5px solid var(--vlblue);
+    border-right: 1.5px solid var(--vlblue);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .mat-item:nth-child(2n) { border-right: none; }
+  .mat-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .mat-item-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .mat-item-title { font-weight: 800; font-size: 12.5px; color: var(--navy); margin-bottom: 2px; }
+  .mat-item-file { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--steel); letter-spacing: 0.3px; }
+  .mat-item-desc { font-size: 11.5px; color: #4a6070; line-height: 1.45; margin-top: 3px; }
+
+  .phase.ha        .phase-num { background: var(--steel); }
+  .phase.einstieg  .phase-num { background: var(--bluegr); }
+  .phase.erarbeit  .phase-num { background: var(--blue); }
+  .phase.erarbeit2 .phase-num { background: var(--navy); }
+  .phase.ueben     .phase-num { background: var(--gold); }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; border: none; max-width: 100%; }
+    .page::before { display: none; }
+    .phase { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-row">
+      <div>
+        <div class="header-badge">📅 Stundenplanung · M8.6 · Jgst. 8</div>
+        <h1>Stunde 3 – <span>Lösbarkeit eines LGS – Die 3 Fälle</span></h1>
+      </div>
+      <div class="header-meta">
+        <span class="meta-chip">Std. 3 / 10</span>
+        <span class="stunden-badge">⏱ ca. 45 Min.</span>
+        <span class="meta-chip">M 8.6 · Gymnasium Bayern</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+
+    <!-- UNTERRICHTSZIELE -->
+    <div class="lernziele-box">
+      <div class="lz-title">🎯 Unterrichtsziele</div>
+      <ul class="lz-list">
+        <li><span class="lz-dot"></span><span>Die Schülerinnen und Schüler erkennen die drei Fälle der Lösbarkeit eines LGS graphisch und beschreiben die Bedingungen, unter denen sie auftreten.</span></li>
+        <li><span class="lz-dot"></span><span>Die Schülerinnen und Schüler beurteilen anhand der Steigungen und y-Achsenabschnitte, ob ein LGS keine, genau eine oder unendlich viele Lösungen hat.</span></li>
+      </ul>
+    </div>
+
+    <!-- VERLAUF -->
+    <div class="sec-label">📋 Stundenverlauf</div>
+
+    <!-- HA-VERBESSERUNG -->
+    <div class="phase ha">
+      <div class="phase-header">
+        <div class="phase-num">
+          <span class="phase-num-text">Verbesserung</span>
+          <span class="phase-num-title">HA</span>
+        </div>
+        <div class="phase-title-area">
+          <div class="phase-title">Verbesserung der Hausaufgabe</div>
+          <div class="phase-subtitle">Schülerpräsentation – S. 143 / 6a, 7a, 8b</div>
+        </div>
+        <div class="phase-time">
+          <span class="phase-time-num">~5</span>
+          <span class="phase-time-unit">Min.</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-row">
+          <span class="phase-icon">✅</span>
+          <div>
+            Eine Schülerin / ein Schüler präsentiert ihre / seine Lösung. Offene Fragen klären, typische Fehler ansprechen.
+            <div class="mat-chips">
+              <span class="mat-chip sf">Schülerpräsentation</span>
+              <span class="mat-chip mat">📚 Fokus Mathematik 8 – S. 143 / 6a, 7a, 8b</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EINSTIEG -->
+    <div class="phase einstieg">
+      <div class="phase-header">
+        <div class="phase-num">
+          <span class="phase-num-text">Einstieg</span>
+          <span class="phase-num-title">Impuls</span>
+        </div>
+        <div class="phase-title-area">
+          <div class="phase-title">Wie können zwei Geraden zueinander liegen?</div>
+          <div class="phase-subtitle">Vorwissen aktivieren – Überleitung zum Applet</div>
+        </div>
+        <div class="phase-time">
+          <span class="phase-time-num">~3</span>
+          <span class="phase-time-unit">Min.</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-row">
+          <span class="phase-icon">💬</span>
+          <div>
+            Impuls im UG: „Zwei Geraden in der Ebene – wie können sie zueinander liegen?" Schülerinnen und Schüler antworten frei, Lehrkraft demonstriert mit Stiften: schneiden sich · echt parallel · identisch.
+            <div class="mat-chips">
+              <span class="mat-chip sf">UG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERARBEITUNG -->
+    <div class="phase erarbeit">
+      <div class="phase-header">
+        <div class="phase-num">
+          <span class="phase-num-text">Erarbeitung</span>
+          <span class="phase-num-title">Erkunden</span>
+        </div>
+        <div class="phase-title-area">
+          <div class="phase-title">Die 3 Fälle – GeoGebra-Applet erkunden</div>
+          <div class="phase-subtitle">Schieberegler bewegen, Beobachtungen formulieren, im UG sichern</div>
+        </div>
+        <div class="phase-time">
+          <span class="phase-time-num">~15</span>
+          <span class="phase-time-unit">Min.</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-row">
+          <span class="phase-icon">📱</span>
+          <div>
+            GeoGebra-Applet öffnen: Schieberegler für Steigung und y-Achsenabschnitt verändern – wann schneiden sich die Geraden, wann sind sie echt parallel, wann identisch? Beobachtungen notieren.
+            <div class="mat-chips">
+              <span class="mat-chip sf">EA</span>
+              <span class="mat-chip dig">📱 geogebra.org/m/hwnkggt5</span>
+              <span class="mat-chip dig">📄 QR_Karte_GeoGebra_Std3.html</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-row">
+          <span class="phase-icon">🗣️</span>
+          <div>
+            Ergebnisse im UG sichern.<br>
+            Bedingungen gemeinsam formulieren: Wann hat ein LGS keine, genau eine, unendlich viele Lösungen?
+            <div class="mat-chips">
+              <span class="mat-chip sf">UG</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-row">
+          <span class="phase-icon">📖</span>
+          <div>
+            Wissensspeicher: Abschnitt „Lösbarkeit" lesen.
+            <div class="mat-chips">
+              <span class="mat-chip sf">EA</span>
+              <span class="mat-chip ws">📄 Wissensspeicher → Lösbarkeit eines LGS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÜBEN -->
+    <div class="phase ueben">
+      <div class="phase-header">
+        <div class="phase-num">
+          <span class="phase-num-text">Übung</span>
+          <span class="phase-num-title">Anwenden</span>
+        </div>
+        <div class="phase-title-area">
+          <div class="phase-title">Schulbuch S. 145/16 & S. 144/12d</div>
+          <div class="phase-subtitle">Kommunizieren · Bedingungen formulieren · Lösbarkeit beurteilen</div>
+        </div>
+        <div class="phase-time">
+          <span class="phase-time-num">~18</span>
+          <span class="phase-time-unit">Min.</span>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-row">
+          <span class="phase-icon">🗣️</span>
+          <div>
+            S. 145/16 mündlich im UG: Bedingungen formulieren, unter denen die 3 Fälle auftreten. Hilfe: Wortschnipsel.
+            <div class="mat-chips">
+              <span class="mat-chip sf">UG</span>
+              <span class="mat-chip mat">📚 Fokus Mathematik 8 – S. 145/16</span>
+            </div>
+          </div>
+        </div>
+        <div class="phase-row">
+          <span class="phase-icon">📐</span>
+          <div>
+            S. 144/12d im UG: Gleichungen umformen, Steigungen und y-Achsenabschnitte vergleichen, Lösbarkeit beurteilen.
+            <div class="mat-chips">
+              <span class="mat-chip sf">UG</span>
+              <span class="mat-chip mat">📚 Fokus Mathematik 8 – S. 144/12d</span>
+            </div>
+          </div>
+        </div>
+        <div class="diff-box">
+          <strong>🎯 Differenzierung:</strong><br>
+          Bonusaufgabe Stunde 3 – Anzahl der Lösungen begründen inkl. Challenge für Schnelle (I ax + by = 0, II cx + dy = 0)
+          <div class="mat-chips" style="margin-top:6px;">
+            <span class="mat-chip mat">📄 Bonusaufgabe_Std3_Loesbarkeit.html</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HAUSAUFGABE -->
+    <div class="ha-box">
+      <strong>Hausaufgabe:</strong> &nbsp; Schulbuch S. 144 / Aufgabe 11<br>
+
+    </div>
+
+    <!-- MATERIALIEN -->
+    <div class="sec-label">📦 Alle Materialien im Überblick</div>
+    <div class="mat-overview">
+      <div class="mat-overview-header">📁 Benötigte Dateien – Stunde 3</div>
+      <div class="mat-grid">
+
+        <div class="mat-item">
+          <span class="mat-item-icon">📱</span>
+          <div>
+            <div class="mat-item-title">GeoGebra-Applet & QR-Karte</div>
+            <div class="mat-item-file">geogebra.org/m/hwnkggt5 · QR_Karte_GeoGebra_Std3.html</div>
+            <div class="mat-item-desc">Lösbarkeit eines LGS – Die 3 Fälle interaktiv erkunden (Schieberegler)</div>
+          </div>
+        </div>
+
+        <div class="mat-item">
+          <span class="mat-item-icon">📖</span>
+          <div>
+            <div class="mat-item-title">Wissensspeicher</div>
+            <div class="mat-item-file">Lerninhalte_M8_6_LGS_print.html</div>
+            <div class="mat-item-desc">Abschnitt: „Lösbarkeit eines LGS" – Die 3 Fälle</div>
+          </div>
+        </div>
+
+        <div class="mat-item">
+          <span class="mat-item-icon">📚</span>
+          <div>
+            <div class="mat-item-title">Schulbuch</div>
+            <div class="mat-item-file">Fokus Mathematik 8, Cornelsen</div>
+            <div class="mat-item-desc">S. 145/16 (mündlich) · S. 144/12d · HA: S. 144/13</div>
+          </div>
+        </div>
+
+        <div class="mat-item">
+          <span class="mat-item-icon">⭐</span>
+          <div>
+            <div class="mat-item-title">Bonusaufgabe</div>
+            <div class="mat-item-file">Bonusaufgabe_Std3_Loesbarkeit.html</div>
+            <div class="mat-item-desc">Anzahl der Lösungen begründen inkl. Challenge ax + by = 0</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

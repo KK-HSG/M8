@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expertenkarten – Std. 5 – LGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+    --green:  #2e7d52;
+    --lgreen: #e8f8f0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+  }
+
+  /* PAGE */
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* CARD BASE */
+  .expert-card {
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .expert-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  .card-header {
+    padding: 20px 28px 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-header.blue  { background: var(--blue); }
+  .card-header.green { background: var(--green); }
+  .card-header.navy  { background: var(--navy); }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .experte-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.18);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .card-title {
+    font-family: 'Caveat', cursive;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+  }
+
+  .card-title span { color: var(--yellow); }
+
+  .stunden-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+    flex-shrink: 0;
+  }
+
+  .stripe {
+    height: 5px;
+  }
+  .stripe-blue  { background: linear-gradient(90deg, var(--yellow), var(--blue), var(--lblue)); }
+  .stripe-green { background: linear-gradient(90deg, var(--yellow), var(--green), #a8d8b8); }
+  .stripe-navy  { background: linear-gradient(90deg, var(--yellow), var(--bluegr), var(--lblue)); }
+
+  /* CONTENT */
+  .card-content {
+    padding: 24px 28px 30px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* SECTION LABEL */
+  .sec-label {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px);
+  }
+
+  .pill {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    padding: 1px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* AUFGABE BOX */
+  .aufgabe-box {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .aufgabe-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-radius: 8px;
+    padding: 10px 16px;
+    line-height: 2.2;
+    display: inline-block;
+    margin: 8px 0;
+    color: var(--navy);
+  }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+
+  .step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: var(--yellow);
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .step-v {
+    background: var(--navy);
+    color: white;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    border-color: var(--navy);
+  }
+
+  code.ic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--vlblue);
+    border: 1px solid var(--lblue);
+    border-radius: 4px;
+    padding: 1px 6px;
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  /* HILFE SYSTEM */
+  .hilfe-wrapper {
+    padding: 14px;
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .hilfe-title {
+    background: var(--navy);
+    color: white;
+    font-family: 'Caveat', cursive;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hilfe-items {
+    gap: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hilfe-item {
+    border-bottom: 1.5px solid var(--vlblue);
+    padding: 0;
+  }
+  .hilfe-item:last-child { border-bottom: none; }
+
+  .hilfe-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--navy);
+    text-align: left;
+  }
+
+  .hilfe-toggle:hover { background: var(--vlblue); }
+
+  .hilfe-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid;
+  }
+
+  .h1 { background: #e8f8f0; color: var(--green); border-color: var(--green); }
+  .h2 { background: #fff8e0; color: var(--gold); border-color: var(--gold); }
+  .h3 { background: #fadbd8; color: #c0392b; border-color: #c0392b; }
+
+  .hilfe-arrow {
+    margin-left: auto;
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+
+  .hilfe-body {
+    line-height: 1.5;
+    font-size: 12px;
+    display: none;
+    padding: 0 16px 8px 50px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #2a4050;
+  }
+
+  .hilfe-body.open { display: block; }
+  .hilfe-toggle.active .hilfe-arrow { transform: rotate(180deg); }
+
+  /* AUFGABEN GRID */
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .task-card {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 3px 3px 0 var(--steel);
+    position: relative;
+  }
+
+  .task-num-bg {
+    font-family: 'Caveat', cursive;
+    font-size: 44px;
+    color: var(--vlblue);
+    position: absolute;
+    right: 10px; top: 4px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .task-level {
+    display: inline-block;
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 10px; border-radius: 20px;
+    border: 1.5px solid currentColor;
+    margin-bottom: 6px;
+  }
+
+  .level-g { color: var(--green); background: var(--lgreen); }
+  .level-m { color: var(--blue);  background: var(--vlblue); }
+  .level-e { color: var(--gold);  background: #fff8e0; }
+
+  .task-title { font-weight: 800; font-size: 13px; margin-bottom: 6px; padding-right: 36px; }
+
+  .task-body { font-size: 12.5px; color: #2a4050; line-height: 1.6; }
+
+  .task-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 5px 8px;
+    display: block;
+    margin: 6px 0;
+    line-height: 1.9;
+  }
+
+  .work-lines { margin-top: 10px; display: flex; flex-direction: column; gap: 16px; }
+  .work-line { border-bottom: 1.5px solid var(--steel); min-height: 24px; }
+
+  /* PARTNER CARD */
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .partner-box {
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .partner-box-header {
+    padding: 10px 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .partner-box-body {
+    background: white;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 6px;
+  }
+
+  .check-list li {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .check-box {
+    flex-shrink: 0;
+    width: 16px; height: 16px;
+    border: 2px solid var(--navy);
+    border-radius: 3px;
+    margin-top: 2px;
+  }
+
+  .ergebnis-line {
+    border-bottom: 2px solid var(--navy);
+    margin-top: 8px;
+    height: 22px;
+  }
+
+  .task-hilfe {
+    margin-top: 8px;
+    border-top: 1.5px solid var(--vlblue);
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .task-hilfe-btn {
+    width: 100%;
+    background: none;
+    border: 1.5px solid;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-align: left;
+    transition: background 0.15s;
+  }
+
+  .task-hilfe-btn.th1 { color: var(--green); border-color: var(--green); }
+  .task-hilfe-btn.th2 { color: var(--gold);  border-color: var(--gold); }
+  .task-hilfe-btn.th3 { color: #c0392b;      border-color: #c0392b; }
+
+  .task-hilfe-btn.th1:hover { background: var(--lgreen); }
+  .task-hilfe-btn.th2:hover { background: #fff8e0; }
+  .task-hilfe-btn.th3:hover { background: #fadbd8; }
+
+  .task-hilfe-btn .th-arrow { margin-left: auto; font-size: 10px; transition: transform 0.2s; }
+  .task-hilfe-btn.active .th-arrow { transform: rotate(180deg); }
+
+  .task-hilfe-body {
+    display: none;
+    font-size: 11.5px;
+    line-height: 1.55;
+    padding: 4px 8px 4px 24px;
+    color: #2a4050;
+    border-left: 3px solid var(--steel);
+    margin-left: 4px;
+  }
+
+  .task-hilfe-body.open { display: block; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .expert-card { box-shadow: none; border-radius: 0; page-break-after: always; }
+    .expert-card::before { display: none; }
+    .expert-card:last-child { page-break-after: auto; }
+    .hilfe-body {
+    line-height: 1.5;
+    font-size: 12px; display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════
+       EXPERTE A – EINSETZUNGSVERFAHREN
+  ═══════════════════════════════════════════════ -->
+  <div class="expert-card">
+    <div class="card-header" style="background:var(--blue);">
+      <div class="header-row">
+        <div>
+          <div class="experte-badge">✏️ Experte A · Stunde 5</div>
+          <div class="card-title">Einsetzungs-<br><span>verfahren</span></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+          <span class="stunden-badge">🎯 Partnerarbeit</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:rgba(255,255,255,0.6)">M 8.6 · LGS</span>
+        </div>
+      </div>
+    </div>
+    <div class="stripe" style="background:linear-gradient(90deg,var(--yellow),var(--blue),var(--lblue))"></div>
+
+    <div class="card-content">
+
+      <!-- SCHRITT FÜR SCHRITT -->
+      <div>
+        <div class="sec-label">📖 So geht's <span class="pill">Schritt für Schritt</span></div>
+        <div class="aufgabe-box">
+          <div style="font-size:12.5px; color:#4a6070; margin-bottom:8px;">Beispiel-LGS:</div>
+          <div class="aufgabe-sys">I &nbsp;&nbsp;y = 3x + 2<br>II &nbsp;2x + y = 11</div>
+          <div class="steps" style="margin-top:12px;">
+            <div class="step">
+              <span class="step-num step-v" style="font-size:9px; letter-spacing:0.3px;">V</span>
+              <span>Eine Variable ist bereits freigestellt: <code class="ic">y = 3x + 2</code> (Gl. I)</span>
+            </div>
+            <div class="step">
+              <span class="step-num">1</span>
+              <span>Ausdruck für y in Gleichung II einsetzen:<br><code class="ic">2x + (3x + 2) = 11</code></span>
+            </div>
+            <div class="step">
+              <span class="step-num">2</span>
+              <span>Zusammenfassen und nach x lösen:<br><code class="ic">5x + 2 = 11 → 5x = 9 → x = 1,8</code></span>
+            </div>
+            <div class="step">
+              <span class="step-num">3</span>
+              <span>x in eine der Gleichungen einsetzen (hier Gl. I):<br><code class="ic">y = 3 · 1,8 + 2 = 7,4</code></span>
+            </div>
+            <div class="step">
+              <span class="step-num">4</span>
+              <span>Lösung: <strong>x = 1,8, y = 7,4</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GESTUFTE HILFEN -->
+      <div>
+        <div class="sec-label">💡 Gestufte Hilfen <span class="pill">Nur wenn nötig</span></div>
+        <div class="hilfe-wrapper">
+          <div class="hilfe-title">🆘 Hilfen – Einsetzungsverfahren (nur aufklappen wenn nötig!)</div>
+          <div class="hilfe-items">
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h1">1</span>
+                <span>Tipp 1 – Denkanstoß</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Schau dir Gleichung I genau an: Ist eine Variable bereits allein auf einer Seite? Dann weißt du schon, was du in Gleichung II einsetzen kannst.
+              </div>
+            </div>
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h2">2</span>
+                <span>Tipp 2 – Teilschritt</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Ersetze in Gleichung II das y durch den Ausdruck aus Gleichung I. Schreib den Ausdruck in Klammern: <code class="ic">2x + (3x + 2) = 11</code>. Jetzt hast du nur noch eine Unbekannte!
+              </div>
+            </div>
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h3">3</span>
+                <span>Tipp 3 – Fast fertige Lösung</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Nach dem Einsetzen: <code class="ic">2x + 3x + 2 = 11 → 5x = 9 → x = 1,8</code><br>
+                Jetzt x in Gl. I einsetzen: <code class="ic">y = 3 · 1,8 + 2 = 7,4</code><br>
+                L = {(1,8 | 7,4)}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- AUFGABEN -->
+      <div>
+        <div class="sec-label">✍️ Deine Aufgaben <span class="pill">Üben</span></div>
+        <div class="tasks-grid">
+
+          <div class="task-card">
+            <span class="task-num-bg">1</span>
+            <div class="task-level level-g">Grundlegend</div>
+            <div class="task-title">Einsetzungsverfahren</div>
+            <div class="task-body">
+              <div class="task-sys">I &nbsp;&nbsp;y = 2x + 1<br>II &nbsp;x + y = 7</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+              <div class="task-hilfe">
+                <button class="task-hilfe-btn th1" onclick="toggle(this)"><span>💡 Tipp 1</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Gleichung I ist bereits nach y aufgelöst. Was kannst du in Gl. II einsetzen?</div>
+                <button class="task-hilfe-btn th2" onclick="toggle(this)"><span>💡 Tipp 2</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Setze <code class="ic">y = 2x + 1</code> in Gl. II ein: <code class="ic">x + (2x + 1) = 7</code> → löse nach x auf.</div>
+                <button class="task-hilfe-btn th3" onclick="toggle(this)"><span>💡 Tipp 3</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body"><code class="ic">3x + 1 = 7 → x = 2 → y = 5</code><br>L = {(2 | 5)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <span class="task-num-bg">2</span>
+            <div class="task-level level-m">Mittel</div>
+            <div class="task-title">Erst freistellen</div>
+            <div class="task-body">
+              Stelle zuerst eine Variable frei, dann einsetzen.
+              <div class="task-sys">I &nbsp;&nbsp;3x + 2y = 16<br>II &nbsp;2x + y = 9</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+              <div class="task-hilfe">
+                <button class="task-hilfe-btn th1" onclick="toggle(this)"><span>💡 Tipp 1</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Stelle in Gl. II die Variable y frei (Koeffizient ist 1): <code class="ic">y = 9 − 2x</code></div>
+                <button class="task-hilfe-btn th2" onclick="toggle(this)"><span>💡 Tipp 2</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Setze <code class="ic">y = 9 − 2x</code> in Gl. I ein: <code class="ic">3x + 2·(9 − 2x) = 16</code> → <strong>Achtung: Klammern ausmultiplizieren!</strong> → löse nach x auf.</div>
+                <button class="task-hilfe-btn th3" onclick="toggle(this)"><span>💡 Tipp 3</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body"><code class="ic">3x + 18 − 4x = 16 → −x = −2 → x = 2 → y = 5</code><br>L = {(2 | 5)}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       EXPERTE B – ADDITIONSVERFAHREN
+  ═══════════════════════════════════════════════ -->
+  <div class="expert-card">
+    <div class="card-header" style="background:var(--gold);">
+      <div class="header-row">
+        <div>
+          <div class="experte-badge" style="color:var(--navy); background:rgba(255,255,255,0.3); border-color:white;">✏️ Experte B · Stunde 5 · erklärt A</div>
+          <div class="card-title" style="color:var(--navy);">Additions-<br><span style="color:white;">verfahren</span></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+          <span class="stunden-badge" style="background:white; color:var(--navy); border-color:var(--navy); box-shadow:2px 2px 0 var(--navy);">🎯 Partnerarbeit</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:rgba(255,255,255,0.8)">M 8.6 · LGS</span>
+        </div>
+      </div>
+    </div>
+    <div class="stripe" style="background:linear-gradient(90deg,var(--yellow),var(--gold),#e8c97a)"></div>
+
+    <div class="card-content">
+
+      <!-- SCHRITT FÜR SCHRITT -->
+      <div>
+        <div class="sec-label">📖 So geht's <span class="pill">Schritt für Schritt</span></div>
+        <div style="margin-bottom:12px;">
+          <img src="Grundidee_Additionsverfahren.png" alt="Grundidee: Gleichungen addieren" style="width:100%; border-radius:8px; border:2px solid var(--lblue);">
+        </div>
+        <div class="aufgabe-box">
+          <div style="font-size:12.5px; color:#4a6070; margin-bottom:8px;">Beispiel-LGS:</div>
+          <div class="aufgabe-sys">I &nbsp;&nbsp;3x + 2y = 12<br>II &nbsp;x − 2y = 4</div>
+          <div class="steps" style="margin-top:12px;">
+            <div class="step">
+              <span class="step-num step-v" style="font-size:9px;">V</span>
+              <span>Zwei Koeffizienten (hier +2y und −2y) heben sich auf → direkt addieren möglich.</span>
+            </div>
+            <div class="step">
+              <span class="step-num">1</span>
+              <span>Gleichungen addieren I + II:<br><code class="ic">(3x + 2y) + (x − 2y) = 12 + 4</code><br><code class="ic">4x = 16 → x = 4</code></span>
+            </div>
+            <div class="step">
+              <span class="step-num">2</span>
+              <span>x in eine der Gleichungen einsetzen:<br><code class="ic">3·4 + 2y = 12 → 12 + 2y = 12 → y = 0</code></span>
+            </div>
+            <div class="step">
+              <span class="step-num">3</span>
+              <span>Lösung: <strong>x = 4, y = 0</strong></span>
+            </div>
+          </div>
+          <div style="background:#fff8e0; border:1.5px dashed var(--yellow); border-radius:6px; padding:8px 12px; margin-top:12px; font-size:12px; color:#5a3e00;">
+            💡 Falls sich kein Koeffizient direkt aufhebt: eine Gleichung mit einem Faktor multiplizieren, z. B. Gl. II · 2, damit die y-Koeffizienten gleich groß (aber entgegengesetzt) werden.
+          </div>
+        </div>
+      </div>
+
+      <!-- GESTUFTE HILFEN -->
+      <div>
+        <div class="sec-label">💡 Gestufte Hilfen <span class="pill">Nur wenn nötig</span></div>
+        <div class="hilfe-wrapper">
+          <div class="hilfe-title">🆘 Hilfen – Additionsverfahren (nur aufklappen wenn nötig!)</div>
+          <div class="hilfe-items">
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h1">1</span>
+                <span>Tipp 1 – Denkanstoß</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Schau dir die Koeffizienten der Variablen an: Gibt es einen, der in beiden Gleichungen gleich groß ist – einmal positiv, einmal negativ? Dann hebt er sich beim Addieren auf.
+              </div>
+            </div>
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h2">2</span>
+                <span>Tipp 2 – Teilschritt</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Falls kein Koeffizient direkt passt: Multipliziere eine Gleichung mit einem geeigneten Faktor. Beispiel: Wenn in Gl. I „2y" und in Gl. II „y" steht → Gl. II · 2 → dann steht dort „2y" und du kannst addieren oder subtrahieren.
+              </div>
+            </div>
+
+            <div class="hilfe-item">
+              <button class="hilfe-toggle" onclick="toggle(this)">
+                <span class="hilfe-num h3">3</span>
+                <span>Tipp 3 – Fast fertige Lösung</span>
+                <span class="hilfe-arrow">▼</span>
+              </button>
+              <div class="hilfe-body">
+                Für Aufgabe 1: <code class="ic">I+II: 2x = 8 → x = 4</code><br>
+                In Gl. I einsetzen: <code class="ic">4 + y = 6 → y = 2</code><br>
+                L = {(4 | 2)}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- AUFGABEN -->
+      <div>
+        <div class="sec-label">✍️ Deine Aufgaben <span class="pill">Üben</span></div>
+        <div class="tasks-grid">
+
+          <div class="task-card">
+            <span class="task-num-bg">1</span>
+            <div class="task-level level-g">Grundlegend</div>
+            <div class="task-title">Additionsverfahren</div>
+            <div class="task-body">
+              <div class="task-sys">I &nbsp;&nbsp;x + y = 6<br>II &nbsp;x − y = 2</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+              <div class="task-hilfe">
+                <button class="task-hilfe-btn th1" onclick="toggle(this)"><span>💡 Tipp 1</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Schau dir die y-Koeffizienten an: +y und −y. Was passiert wenn du die Gleichungen addierst?</div>
+                <button class="task-hilfe-btn th2" onclick="toggle(this)"><span>💡 Tipp 2</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">I + II: <code class="ic">(x + y) + (x − y) = 6 + 2 → 2x = 8</code></div>
+                <button class="task-hilfe-btn th3" onclick="toggle(this)"><span>💡 Tipp 3</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body"><code class="ic">x = 4 → in Gl. I: 4 + y = 6 → y = 2</code><br>L = {(4 | 2)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <span class="task-num-bg">2</span>
+            <div class="task-level level-m">Mittel</div>
+            <div class="task-title">Mit Faktor</div>
+            <div class="task-body">
+              Multipliziere zuerst mit einem geeigneten Faktor.
+              <div class="task-sys">I &nbsp;&nbsp;x + 2y = 8<br>II &nbsp;3x + y = 9</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+              <div class="task-hilfe">
+                <button class="task-hilfe-btn th1" onclick="toggle(this)"><span>💡 Tipp 1</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Kein Koeffizient hebt sich direkt auf. Multipliziere Gl. II mit −2, damit die y-Koeffizienten entgegengesetzt gleich sind und sich beim Addieren aufheben.</div>
+                <button class="task-hilfe-btn th2" onclick="toggle(this)"><span>💡 Tipp 2</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body">Gl. II · (−2): <code class="ic">−6x − 2y = −18</code>. Jetzt addieren I + II·(−2): <code class="ic">x + 2y + (−6x − 2y) = 8 + (−18) → −5x = −10 → x = 2</code></div>
+                <button class="task-hilfe-btn th3" onclick="toggle(this)"><span>💡 Tipp 3</span><span class="th-arrow">▼</span></button>
+                <div class="task-hilfe-body"><code class="ic">x = 2 → in Gl. I: 2 + 2y = 8 → y = 3</code><br>L = {(2 | 3)}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PARTNERBLATT – GEGENSEITIG ERKLÄREN
+  ═══════════════════════════════════════════════ -->
+  <div class="expert-card">
+    <div class="card-header navy">
+      <div class="header-row">
+        <div>
+          <div class="experte-badge">🤝 Partnerarbeit · Std. 5</div>
+          <div class="card-title">Gegenseitig <span>erklären</span></div>
+        </div>
+        <span class="stunden-badge">👥 A erklärt B · B erklärt A</span>
+      </div>
+    </div>
+    <div class="stripe stripe-navy"></div>
+
+    <div class="card-content">
+
+      <p style="font-size:13.5px; line-height:1.65;">
+        Du hast dein Verfahren erarbeitet und geübt – jetzt erklärst du es deinem Partner. Dann erklärt dein Partner sein Verfahren. Nutzt das Lösungsbeispiel von eurer Karte als Grundlage.
+      </p>
+
+      <div class="partner-grid">
+
+        <!-- A ERKLÄRT -->
+        <div class="partner-box">
+          <div class="partner-box-header" style="background:var(--blue)">
+            📘 Experte A erklärt B
+          </div>
+          <div class="partner-box-body">
+            <strong style="font-size:13px;">Einsetzungsverfahren</strong>
+            <ul class="check-list" style="margin-top:8px;">
+              <li><span class="check-box"></span>Ich erkläre die Voraussetzung: Was muss vorliegen? Wie muss ich das LGS modifizieren, falls die Voraussetzung nicht vorliegt?</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 1: Einsetzen</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 2: nach der Variablen auflösen</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 3: andere Variable berechnen</li>
+              <li><span class="check-box"></span>Ich erkläre die Lösung</li>
+            </ul>
+            <div style="margin-top:12px; font-size:12px; color:#4a6070;">B löst danach selbst mit dem Einsetzungsverfahren:</div>
+            <div class="task-sys" style="font-size:11.5px; margin-top:6px;">I &nbsp;&nbsp;y = x + 3<br>II &nbsp;2x + y = 9</div>
+            <div class="work-lines" style="margin-top:8px;"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+            <button style="margin-top:8px; width:100%; background:none; border:1.5px solid var(--blue); border-radius:5px; cursor:pointer; padding:4px 8px; font-family:Nunito,sans-serif; font-weight:700; font-size:11px; color:var(--blue); display:flex; align-items:center; gap:6px;" onclick="toggle(this)">✅ Lösung <span style="margin-left:auto; font-size:9px; transition:transform 0.2s;">▼</span></button>
+            <div class="task-hilfe-body" style="margin-top:4px;">V: Gl. I bereits nach y aufgelöst<br>Schritt 1: <code class="ic">2x + (x+3) = 9 → 3x = 6 → x = 2</code><br>Schritt 2: <code class="ic">y = 2+3 = 5</code><br>Schritt 3: andere Variable: Lösung: <strong>x=2, y=5</strong> · L = {(2|5)}</div>
+          </div>
+        </div>
+
+        <!-- B ERKLÄRT -->
+        <div class="partner-box">
+          <div class="partner-box-header" style="background:var(--gold)">
+            📗 Experte B erklärt A
+          </div>
+          <div class="partner-box-body">
+            <strong style="font-size:13px;">Additionsverfahren</strong>
+            <ul class="check-list" style="margin-top:8px;">
+              <li><span class="check-box"></span>Ich erkläre die Voraussetzung: Was muss vorliegen? Wie muss ich das LGS modifizieren, falls die Voraussetzung nicht vorliegt?</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 1: Addieren (auch Subtrahieren möglich)</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 2: nach der Variablen auflösen</li>
+              <li><span class="check-box"></span>Ich erkläre Schritt 3: andere Variable berechnen</li>
+              <li><span class="check-box"></span>Ich erkläre die Lösung</li>
+            </ul>
+            <div style="margin-top:12px; font-size:12px; color:#4a6070;">A löst danach selbst mit dem Additionsverfahren:</div>
+            <div class="task-sys" style="font-size:11.5px; margin-top:6px;">I &nbsp;&nbsp;2x + y = 7<br>II &nbsp;2x − y = 3</div>
+            <div class="work-lines" style="margin-top:8px;"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+            <button style="margin-top:8px; width:100%; background:none; border:1.5px solid var(--gold); border-radius:5px; cursor:pointer; padding:4px 8px; font-family:Nunito,sans-serif; font-weight:700; font-size:11px; color:var(--gold); display:flex; align-items:center; gap:6px;" onclick="toggle(this)">✅ Lösung <span style="margin-left:auto; font-size:9px; transition:transform 0.2s;">▼</span></button>
+            <div class="task-hilfe-body" style="margin-top:4px;">V: +y und −y heben sich auf<br>Schritt 1: I + II: <code class="ic">4x = 10 → x = 2,5</code><br>Schritt 2: andere Variable: <code class="ic">2·2,5 + y = 7 → y = 2</code><br>Lösung: <strong>x=2,5, y=2</strong> · L = {(2,5|2)}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- VERGLEICH -->
+      <div>
+        <div class="sec-label">🔍 Gemeinsam reflektieren <span class="pill">Abschluss</span></div>
+        <div class="aufgabe-box">
+          <p style="font-size:13px; margin-bottom:10px;">Löst das folgende LGS <strong>beide</strong> – A mit dem Einsetzungsverfahren, B mit dem Additionsverfahren. Vergleicht danach eure Lösungswege.</p>
+          <div class="aufgabe-sys" style="text-align:center; display:block; margin: 10px auto;">I &nbsp;&nbsp;3x − y = 5<br>II &nbsp;x + y = 3</div>
+          <div style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <div style="font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--blue); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">A – Einsetzungsverfahren</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+            </div>
+            <div>
+              <div style="font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--gold); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">B – Additionsverfahren</div>
+              <div class="work-lines"><div class="work-line"></div><div class="work-line"></div><div class="work-line"></div></div>
+            </div>
+          </div>
+          <button style="margin-top:12px; width:100%; background:none; border:1.5px solid var(--blue); border-radius:6px; cursor:pointer; padding:5px 10px; font-family:Nunito,sans-serif; font-weight:700; font-size:12px; color:var(--blue); display:flex; align-items:center; gap:6px;" onclick="toggle(this)">✅ Lösung zur Kontrolle <span style="margin-left:auto; font-size:10px; transition:transform 0.2s;">▼</span></button>
+          <div class="task-hilfe-body" style="margin-top:4px;">
+            Einsetzungsverfahren: Aus II: <code class="ic">y = 3 − x</code> → in I: <code class="ic">3x − (3−x) = 5 → 4x = 8 → x = 2 → y = 1</code><br>
+            Additionsverfahren: I + II: <code class="ic">4x = 8 → x = 2 → y = 1</code><br>
+            <strong>L = {(2 | 1)}</strong>
+          </div>
+          <div style="margin-top:10px; background:#fffbea; border:1.5px dashed var(--yellow); border-radius:6px; padding:8px 12px; font-size:12.5px; color:#5a3e00;">
+            💬 Welches Verfahren war für dieses LGS einfacher? Warum? Schreibt 1–2 Sätze:<br>
+            <div class="ergebnis-line"></div>
+            <div class="ergebnis-line"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(btn) {
+  btn.classList.toggle('active');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>

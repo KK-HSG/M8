@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Übung Gleichsetzungsverfahren – Std. 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* CARD BASE */
+  .card {
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 5px 5px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  .card-header {
+    padding: 18px 24px 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-header.solo   { background: var(--blue); }
+  .card-header.partner { background: var(--navy); }
+  .card-header.bonus  { background: var(--gold); }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .phase-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .card-header.bonus .phase-badge {
+    color: var(--navy);
+    background: rgba(255,255,255,0.3);
+    border-color: white;
+  }
+
+  .card-title {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .card-title span { color: var(--yellow); }
+  .card-header.bonus .card-title span { color: var(--navy); }
+
+  .phase-chip {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .stripe-blue  { height: 5px; background: linear-gradient(90deg, var(--yellow), var(--blue), var(--lblue)); }
+  .stripe-navy  { height: 5px; background: linear-gradient(90deg, var(--yellow), var(--bluegr), var(--lblue)); }
+  .stripe-gold  { height: 5px; background: linear-gradient(90deg, var(--yellow), var(--gold), #e8c97a); }
+
+  /* CONTENT */
+  .card-content {
+    padding: 20px 24px 26px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* AUFGABEN GRID */
+  .aufgaben-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .aufgabe-box {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 3px 3px 0 var(--steel);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .aufgabe-num {
+    font-family: 'Caveat', cursive;
+    font-size: 48px;
+    color: var(--vlblue);
+    position: absolute;
+    right: 10px; top: 2px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .aufgabe-level {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1.5px solid currentColor;
+  }
+
+  .level-g { color: #2e7d52; background: #e8f8f0; }
+  .level-m { color: var(--blue); background: var(--vlblue); }
+  .level-e { color: var(--gold); background: #fff8e0; }
+
+  .lgs-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 6px 10px;
+    line-height: 2;
+    color: var(--navy);
+  }
+
+  /* GESTUFTE HILFEN */
+  .hilfe-section {
+    border-top: 1.5px solid var(--vlblue);
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .hilfe-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--steel);
+    margin-bottom: 2px;
+  }
+
+  .h-btn {
+    width: 100%;
+    background: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 7px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-align: left;
+    border: 1.5px solid;
+    transition: background 0.15s;
+  }
+
+  .h-btn.h1 { color: #2e7d52; border-color: #2e7d52; }
+  .h-btn.h2 { color: var(--gold); border-color: var(--gold); }
+  .h-btn.h3 { color: #c0392b; border-color: #c0392b; }
+
+  .h-btn.h1:hover { background: #e8f8f0; }
+  .h-btn.h2:hover { background: #fff8e0; }
+  .h-btn.h3:hover { background: #fadbd8; }
+
+  .h-num {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    border: 1.5px solid currentColor;
+  }
+
+  .h-arrow { margin-left: auto; font-size: 9px; transition: transform 0.2s; }
+  .h-btn.active .h-arrow { transform: rotate(180deg); }
+
+  .h-body {
+    display: none;
+    font-size: 11.5px;
+    line-height: 1.55;
+    padding: 3px 7px 5px 26px;
+    color: #2a4050;
+    border-left: 2.5px solid var(--steel);
+    margin-left: 3px;
+  }
+
+  .h-body.open { display: block; }
+
+  code.ic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--vlblue);
+    border: 1px solid var(--lblue);
+    border-radius: 3px;
+    padding: 1px 4px;
+    display: inline-block;
+  }
+
+  /* ABLAUF HINWEIS */
+  .ablauf-box {
+    background: #fffbea;
+    border: 2px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #5a3e00;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .ablauf-icon { font-size: 22px; flex-shrink: 0; }
+
+  /* PARTNER AUFGABE */
+  .partner-aufgabe {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .partner-lgs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-radius: 8px;
+    padding: 8px 16px;
+    line-height: 2.2;
+    color: var(--navy);
+    display: inline-block;
+    margin: 8px 0;
+  }
+
+  .partner-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .partner-col {
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .partner-col-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    color: var(--blue);
+  }
+
+  /* CHALLENGE */
+  .challenge-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .challenge-badge {
+    background: var(--navy);
+    color: var(--yellow);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--navy);
+  }
+
+  .challenge-title {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .challenge-aufgabe {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 3px 3px 0 var(--steel);
+    font-size: 13px;
+    line-height: 1.65;
+    color: #2a4050;
+  }
+
+  @media (max-width: 600px) {
+    .aufgaben-grid { grid-template-columns: 1fr; }
+    .partner-cols { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .card { box-shadow: none; }
+    .card::before { display: none; }
+    .h-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════════════════════
+       PHASE 1 – EINZELARBEIT
+  ══════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-header solo">
+      <div class="header-row">
+        <div>
+          <div class="card-title">Gleichsetzungsverfahren<br><span>Üben</span></div>
+        </div>
+        <span class="phase-chip">🤝 Zu zweit</span>
+      </div>
+    </div>
+    <div class="stripe-blue"></div>
+    <div class="card-content">
+
+      <div class="ablauf-box">
+        <span class="ablauf-icon">📋</span>
+        <span>Jeder rechnet für sich – danach vergleicht ihr die Ergebnisse. Nutzt die gestuften Hilfen nur, wenn ihr wirklich nicht weiterkommt.</span>
+      </div>
+
+      <div class="aufgaben-grid">
+
+        <!-- AUFGABE 1 -->
+        <div class="aufgabe-box">
+          <span class="aufgabe-num">1</span>
+          <div class="aufgabe-level level-g">Grundlegend</div>
+          <div style="font-weight:800; font-size:13px; padding-right:36px; color:var(--navy);">Gleichsetzungsverfahren</div>
+          <div class="lgs-sys">I &nbsp;&nbsp;y = x + 2<br>II &nbsp;y = 3x − 4</div>
+
+          <div class="hilfe-section">
+            <div class="hilfe-label">💡 Hilfen</div>
+            <button class="h-btn h1" onclick="tog(this)"><span class="h-num">1</span>Tipp 1<span class="h-arrow">▼</span></button>
+            <div class="h-body">Beide Gleichungen sind nach y aufgelöst – du kannst die rechten Seiten direkt gleichsetzen.</div>
+            <button class="h-btn h2" onclick="tog(this)"><span class="h-num">2</span>Tipp 2<span class="h-arrow">▼</span></button>
+            <div class="h-body">Setze gleich: <code class="ic">x + 2 = 3x − 4</code> → löse nach x auf.</div>
+            <button class="h-btn h3" onclick="tog(this)"><span class="h-num">3</span>Tipp 3<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">6 = 2x → x = 3</code> → setze x in eine Gleichung ein.</div>
+            <button class="h-btn h1" style="color:var(--blue); border-color:var(--blue);" onclick="tog(this)"><span class="h-num" style="border-color:var(--blue); color:var(--blue);">✓</span>Lösung<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">y = 3 + 2 = 5</code><br>L = {(3 | 5)}</div>
+          </div>
+        </div>
+
+        <!-- AUFGABE 2 -->
+        <div class="aufgabe-box">
+          <span class="aufgabe-num">2</span>
+          <div class="aufgabe-level level-m">Mittel</div>
+          <div style="font-weight:800; font-size:13px; padding-right:36px; color:var(--navy);">Erst umformen</div>
+          <div class="lgs-sys">I &nbsp;&nbsp;2x + y = 7<br>II &nbsp;y = ½x − 2</div>
+
+          <div class="hilfe-section">
+            <div class="hilfe-label">💡 Hilfen</div>
+            <button class="h-btn h1" onclick="tog(this)"><span class="h-num">1</span>Tipp 1<span class="h-arrow">▼</span></button>
+            <div class="h-body">Gl. II ist schon nach y aufgelöst. Stelle zuerst Gl. I ebenfalls nach y um.</div>
+            <button class="h-btn h2" onclick="tog(this)"><span class="h-num">2</span>Tipp 2<span class="h-arrow">▼</span></button>
+            <div class="h-body">I: <code class="ic">y = −2x + 7</code><br>II: <code class="ic">y = ½x − 2</code><br>Setze gleich: <code class="ic">−2x + 7 = ½x − 2</code> → löse nach x auf.</div>
+            <button class="h-btn h3" onclick="tog(this)"><span class="h-num">3</span>Tipp 3<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">9 = 2½x → x = 3,6</code> → setze x in eine Gleichung ein.</div>
+            <button class="h-btn h1" style="color:var(--blue); border-color:var(--blue);" onclick="tog(this)"><span class="h-num" style="border-color:var(--blue); color:var(--blue);">✓</span>Lösung<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">y = ½·3,6 − 2 = −0,2</code><br>L = {(3,6 | −0,2)}</div>
+          </div>
+        </div>
+
+        <!-- AUFGABE 3 -->
+        <div class="aufgabe-box">
+          <span class="aufgabe-num">3</span>
+          <div class="aufgabe-level level-m">Mittel</div>
+          <div style="font-weight:800; font-size:13px; padding-right:36px; color:var(--navy);">Beide umformen</div>
+          <div class="lgs-sys">I &nbsp;&nbsp;2x − y = 1<br>II &nbsp;x + 3y = 11</div>
+
+          <div class="hilfe-section">
+            <div class="hilfe-label">💡 Hilfen</div>
+            <button class="h-btn h1" onclick="tog(this)"><span class="h-num">1</span>Tipp 1<span class="h-arrow">▼</span></button>
+            <div class="h-body">Keine Gleichung ist nach y aufgelöst – forme beide zuerst nach y um. Tipp: bei Gl. I geht das besonders einfach!</div>
+            <button class="h-btn h2" onclick="tog(this)"><span class="h-num">2</span>Tipp 2<span class="h-arrow">▼</span></button>
+            <div class="h-body">I: <code class="ic">y = 2x − 1</code><br>II: <code class="ic">y = (11−x)/3</code><br>Setze gleich: <code class="ic">2x − 1 = (11−x)/3</code> → löse nach x auf.</div>
+            <button class="h-btn h3" onclick="tog(this)"><span class="h-num">3</span>Tipp 3<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">3(2x−1) = 11−x → 6x−3 = 11−x → 7x = 14 → x = 2</code> → setze x ein.</div>
+            <button class="h-btn h1" style="color:var(--blue); border-color:var(--blue);" onclick="tog(this)"><span class="h-num" style="border-color:var(--blue); color:var(--blue);">✓</span>Lösung<span class="h-arrow">▼</span></button>
+            <div class="h-body"><code class="ic">y = 2·2 − 1 = 3</code><br>L = {(2 | 3)}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<script>
+function tog(btn) {
+  btn.classList.toggle('active');
+  btn.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>

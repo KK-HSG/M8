@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonusaufgabe – Fehlersuche Std. 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+    --red:    #c0392b;
+    --lred:   #fadbd8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: var(--navy);
+    padding: 22px 28px 18px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -20px; right: 40px;
+    width: 100px; height: 100px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.15;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .header h1 span { color: var(--yellow); }
+
+  .bonus-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--yellow), var(--bluegr), var(--lblue));
+  }
+
+  .content {
+    padding: 22px 26px 30px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .intro {
+    background: #fffbea;
+    border: 2px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5a3e00;
+  }
+
+  .aufgabe {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--steel);
+    overflow: hidden;
+  }
+
+  .aufgabe-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--vlblue);
+    border-bottom: 2px solid var(--lblue);
+  }
+
+  .aufgabe-letter {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .aufgabe-title {
+    font-weight: 800;
+    font-size: 13.5px;
+    color: var(--navy);
+  }
+
+  .aufgabe-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #2a4050;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lgs-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 7px 12px;
+    display: inline-block;
+    line-height: 2.1;
+    color: var(--navy);
+  }
+
+  .schuelerloesung {
+    background: var(--lred);
+    border: 2px solid var(--red);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 2;
+    color: var(--navy);
+    position: relative;
+  }
+
+  .schuelerloesung::before {
+    content: '⚠️ Schülerlösung';
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .aufgabe-fragen { font-size: 13px; line-height: 1.7; }
+  .aufgabe-fragen li { margin-left: 18px; margin-bottom: 4px; }
+
+  .loesung-toggle {
+    width: 100%;
+    background: none;
+    border: 1.5px solid var(--blue);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--blue);
+    text-align: left;
+    transition: background 0.15s;
+  }
+
+  .loesung-toggle:hover { background: var(--vlblue); }
+  .loesung-arrow { margin-left: auto; font-size: 11px; transition: transform 0.2s; }
+  .loesung-toggle.active .loesung-arrow { transform: rotate(180deg); }
+
+  .loesung-body {
+    display: none;
+    margin-top: 6px;
+    padding: 10px 12px;
+    background: var(--vlblue);
+    border-radius: 6px;
+    border-left: 3px solid var(--blue);
+    font-size: 12.5px;
+    line-height: 1.75;
+  }
+
+  .loesung-body.open { display: block; }
+
+  code.ic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: white;
+    border: 1px solid var(--lblue);
+    border-radius: 4px;
+    padding: 1px 5px;
+    display: inline-block;
+  }
+
+  .richtig-mark { color: #2e7d52; font-weight: 800; }
+  .hinweis-mark { color: var(--gold); font-weight: 800; }
+
+  /* CHALLENGE */
+  .challenge-box {
+    background: var(--navy);
+    border: 3px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--gold);
+  }
+
+  .challenge-header {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .challenge-header::after {
+    content: '🚀';
+    position: absolute;
+    right: 16px;
+    font-size: 40px;
+    opacity: 0.2;
+  }
+
+  .challenge-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 2px solid var(--gold);
+  }
+
+  .challenge-title {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--yellow);
+  }
+
+  .challenge-body {
+    background: #fffbea;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #5a3e00;
+  }
+
+  .challenge-case {
+    background: white;
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .challenge-case-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  .challenge-loesung-toggle {
+    width: 100%;
+    background: none;
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--gold);
+    text-align: left;
+  }
+
+  .challenge-loesung-toggle:hover { background: #fff3cc; }
+  .challenge-loesung-toggle .loesung-arrow { margin-left: auto; font-size: 11px; transition: transform 0.2s; }
+  .challenge-loesung-toggle.active .loesung-arrow { transform: rotate(180deg); }
+
+  .challenge-loesung-body {
+    display: none;
+    padding: 10px 12px;
+    background: #fffbea;
+    border-radius: 6px;
+    border-left: 3px solid var(--gold);
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: #5a3e00;
+  }
+
+  .challenge-loesung-body.open { display: block; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; border: none; max-width: 100%; }
+    .page::before { display: none; }
+    .loesung-body, .challenge-loesung-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-row">
+      <div>
+        <div class="header-badge">⭐ Bonusaufgabe · Std. 4</div>
+        <h1>Fehlersuche<br><span>Gleichsetzungsverfahren</span></h1>
+      </div>
+      <div class="bonus-badge">🎯 Für Schnelle</div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+
+    <div class="intro">
+      🔍 Die folgenden Schülerlösungen enthalten problembehaftete Umformungen. Erkläre, welche Schwierigkeiten die Schüler bei ihren Rechnungen hatten, und rechne das LGS anschließend korrekt mit dem Gleichsetzungsverfahren.
+    </div>
+
+    <!-- AUFGABE a) -->
+    <div class="aufgabe">
+      <div class="aufgabe-header">
+        <span class="aufgabe-letter">a)</span>
+        <span class="aufgabe-title">Gleichsetzungsverfahren – Schülerlösung</span>
+      </div>
+      <div class="aufgabe-body">
+        <div class="lgs-sys">I &nbsp;&nbsp;2x + y = 8<br>II &nbsp;x + 3y = 10</div>
+
+        <div class="schuelerloesung">
+          I &nbsp;nach x auflösen: &nbsp;x = 4 − ½y<br>
+          II nach y auflösen: &nbsp;y = 10/3 − x/3<br>
+          Gleichsetzen: &nbsp;4 − ½y = (10 − x)/3 &nbsp;→ &nbsp;?
+        </div>
+
+        <ol class="aufgabe-fragen">
+          <li>Erkläre, welche Schwierigkeiten aufgetreten sind.</li>
+          <li>Löse das LGS korrekt mit dem Gleichsetzungsverfahren.</li>
+        </ol>
+
+        <button class="loesung-toggle" onclick="toggle(this)">
+          ✅ Lösung anzeigen <span class="loesung-arrow">▼</span>
+        </button>
+        <div class="loesung-body">
+          <span class="hinweis-mark">Problem:</span> Die eine Gleichung wurde nach x, die andere nach y aufgelöst – beim Gleichsetzungsverfahren müssen aber <strong>beide</strong> Gleichungen nach der <strong>gleichen</strong> Variable aufgelöst werden, sonst enthält die neue Gleichung noch zwei Unbekannte.<br><br>
+          <span class="richtig-mark">Korrekte Lösung:</span><br>
+          I: <code class="ic">y = −2x + 8</code> &nbsp; II: <code class="ic">y = 10/3 − x/3</code><br>
+          <code class="ic">−2x + 8 = 10/3 − x/3</code><br>
+          <code class="ic">−2x + x/3 = 10/3 − 8 → −5x/3 = −14/3 → x = 14/5 = 2,8</code><br>
+          <code class="ic">y = −2·2,8 + 8 = 2,4</code><br>
+          <strong>L = {(2,8 | 2,4)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE b) -->
+    <div class="aufgabe">
+      <div class="aufgabe-header">
+        <span class="aufgabe-letter">b)</span>
+        <span class="aufgabe-title">Gleichsetzungsverfahren – Schülerlösung</span>
+      </div>
+      <div class="aufgabe-body">
+        <div class="lgs-sys">I &nbsp;&nbsp;3x − y = 10<br>II &nbsp;x + y = 10</div>
+
+        <div class="schuelerloesung">
+          Beide Gleichungen sind gleich 10,<br>
+          also gilt: &nbsp;3x − y = x + y<br>
+          →&nbsp; 2x = 2y &nbsp;→&nbsp; x = y &nbsp;→&nbsp; ?
+        </div>
+
+        <ol class="aufgabe-fragen">
+          <li>Erkläre, welche Schwierigkeiten aufgetreten sind.</li>
+          <li>Löse das LGS korrekt mit dem Gleichsetzungsverfahren.</li>
+        </ol>
+
+        <button class="loesung-toggle" onclick="toggle(this)">
+          ✅ Lösung anzeigen <span class="loesung-arrow">▼</span>
+        </button>
+        <div class="loesung-body">
+          <span class="hinweis-mark">Problem:</span> Das Gleichsetzen der linken Seiten liefert nur eine Beziehung zwischen x und y – damit verliert man eine der beiden Gleichungen. Das Gleichsetzungsverfahren verlangt, dass beide Gleichungen nach der <strong>gleichen Variable</strong> aufgelöst werden.<br><br>
+          <span class="richtig-mark">Korrekte Lösung:</span><br>
+          I: <code class="ic">y = 3x − 10</code> &nbsp; II: <code class="ic">y = 10 − x</code><br>
+          <code class="ic">3x − 10 = 10 − x → 4x = 20 → x = 5</code><br>
+          <code class="ic">y = 10 − 5 = 5</code><br>
+          <strong>L = {(5 | 5)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHALLENGE -->
+    <div class="challenge-box">
+      <div class="challenge-header">
+        <div>
+          <div class="challenge-badge">Challenge</div>
+          <div class="challenge-title">🚀 Alles korrekt – oder?</div>
+        </div>
+      </div>
+      <div class="challenge-body">
+        <p>Du löst zwei LGS mit dem Gleichsetzungsverfahren und erhältst überraschende Ergebnisse. Ist ein Fehler passiert – oder steckt mehr dahinter?</p>
+
+        <div class="challenge-case">
+          <div class="challenge-case-label">Fall 1</div>
+          <div class="lgs-sys" style="font-size:12.5px; background:#fffbea; border-color:var(--gold);">I &nbsp;&nbsp;2x − y = 4<br>II &nbsp;4x − 2y = 8</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.9;">
+            I: <code class="ic">y = 2x − 4</code><br>
+            II: <code class="ic">y = 2x − 4</code><br>
+            Gleichsetzen: <code class="ic">2x − 4 = 2x − 4 → 2 = 2</code>
+          </div>
+          <p>Habe ich einen Fehler gemacht? Was bedeutet <code class="ic">2 = 2</code>?</p>
+          <button class="challenge-loesung-toggle" onclick="toggleChallenge(this)">✅ Erklärung <span class="loesung-arrow">▼</span></button>
+          <div class="challenge-loesung-body">
+            Kein Fehler! <code class="ic">2 = 2</code> ist eine <strong>wahre Aussage</strong>. Das bedeutet: Die beiden Gleichungen beschreiben <strong>dieselbe Gerade</strong> – die Geraden sind identisch. Das LGS hat <strong>unendlich viele Lösungen</strong>: jeder Punkt auf der Gerade <code class="ic">y = 2x − 4</code> ist eine Lösung.
+          </div>
+        </div>
+
+        <div class="challenge-case">
+          <div class="challenge-case-label">Fall 2</div>
+          <div class="lgs-sys" style="font-size:12.5px; background:#fffbea; border-color:var(--gold);">I &nbsp;&nbsp;2x − y = 4<br>II &nbsp;4x − 2y = 10</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.9;">
+            I: <code class="ic">y = 2x − 4</code><br>
+            II: <code class="ic">y = 2x − 5</code><br>
+            Gleichsetzen: <code class="ic">2x − 4 = 2x − 5 → −4 = −5</code>
+          </div>
+          <p>Habe ich einen Fehler gemacht? Was bedeutet <code class="ic">−4 = −5</code>?</p>
+          <button class="challenge-loesung-toggle" onclick="toggleChallenge(this)">✅ Erklärung <span class="loesung-arrow">▼</span></button>
+          <div class="challenge-loesung-body">
+            Kein Fehler! <code class="ic">−4 = −5</code> ist ein <strong>Widerspruch</strong> – er kann nie wahr sein. Das bedeutet: Die Geraden haben gleiche Steigung (m = 2), aber verschiedene t-Werte – sie sind <strong>echt parallel</strong>. Das LGS hat <strong>keine Lösung: L = { }</strong>
+          </div>
+        </div>
+
+        <button class="challenge-loesung-toggle" onclick="toggleChallenge(this)" style="margin-top:4px;">💡 Was bedeuten diese Ergebnisse allgemein? <span class="loesung-arrow">▼</span></button>
+        <div class="challenge-loesung-body">
+          Das Gleichsetzungsverfahren zeigt dir automatisch die Lösbarkeit:<br>
+          wahre Aussage (z. B. 2 = 2) → <strong>unendlich viele Lösungen</strong><br>
+          Widerspruch (z. B. −4 = −5) → <strong>keine Lösung, L = { }</strong><br>
+          Gleichung mit x → <strong>genau eine Lösung</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggle(btn) {
+  btn.classList.toggle('active');
+  btn.nextElementSibling.classList.toggle('open');
+}
+function toggleChallenge(btn) {
+  btn.classList.toggle('active');
+  btn.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>

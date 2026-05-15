@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gleichsetzungsverfahren – Einstiegsbeispiel Std. 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--lblue) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .header {
+    background: var(--navy);
+    padding: 22px 28px 18px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -20px; right: 40px;
+    width: 100px; height: 100px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.15;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .header h1 span { color: var(--yellow); }
+
+  .stunden-badge {
+    background: var(--yellow);
+    color: var(--navy);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 2px solid var(--gold);
+    box-shadow: 2px 2px 0 var(--gold);
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .stripe {
+    height: 5px;
+    background: linear-gradient(90deg, var(--yellow), var(--bluegr), var(--lblue));
+  }
+
+  .content {
+    padding: 22px 26px 30px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* HINWEIS */
+  .ws-hinweis {
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-left: 5px solid var(--blue);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+
+  /* ANKNÜPFUNG */
+  .ankn-box {
+    background: white;
+    border: 2px solid var(--lblue);
+    border-left: 5px solid var(--bluegr);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #2a4050;
+  }
+
+  .ankn-box strong { color: var(--navy); }
+
+  /* LGS – immer sichtbar */
+  .lgs-box {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 3px 3px 0 var(--lblue);
+  }
+
+  .lgs-label {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .lgs-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    background: var(--vlblue);
+    border: 2px solid var(--lblue);
+    border-radius: 8px;
+    padding: 10px 18px;
+    line-height: 2.4;
+    color: var(--navy);
+    display: inline-block;
+  }
+
+  /* AUFKLAPPBARE SEKTIONEN */
+  .section-toggle {
+    width: 100%;
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: left;
+    box-shadow: 3px 3px 0 var(--steel);
+    transition: background 0.15s;
+  }
+
+  .section-toggle:hover { background: var(--vlblue); }
+
+  .toggle-icon {
+    width: 28px; height: 28px;
+    background: var(--yellow);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .section-toggle.active .toggle-icon { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 16px 18px;
+    margin-top: -10px;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .section-body.open { display: block; }
+
+  /* UMFORMUNG */
+  .umform-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .umform-box {
+    background: var(--vlblue);
+    border: 1.5px solid;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.9;
+  }
+
+  .umform-box.I  { border-color: var(--blue); }
+  .umform-box.II { border-color: var(--bluegr); }
+
+  .umform-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .umform-label.I  { color: var(--blue); }
+  .umform-label.II { color: var(--bluegr); }
+
+  .result-chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    background: white;
+    border: 2px solid;
+    border-radius: 6px;
+    padding: 3px 10px;
+    margin-top: 4px;
+  }
+
+  .result-chip.I  { border-color: var(--blue);  color: var(--blue); }
+  .result-chip.II { border-color: var(--bluegr); color: var(--bluegr); }
+
+  /* SCHRITTE */
+  .voraussetzung {
+    background: #fffbea;
+    border: 1.5px dashed var(--yellow);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: #5a3e00;
+  }
+
+  .voraussetzung strong { color: var(--navy); }
+
+  .step-block {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .step-block:last-child { margin-bottom: 0; }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    background: var(--yellow);
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 1px 1px 0 var(--gold);
+  }
+
+  .step-content { font-size: 13px; line-height: 1.6; }
+
+  code.ic {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: var(--vlblue);
+    border: 1px solid var(--lblue);
+    border-radius: 4px;
+    padding: 1px 5px;
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  .loesung-chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    background: #fffbea;
+    border: 2px solid var(--yellow);
+    border-radius: 8px;
+    padding: 6px 14px;
+    margin-top: 6px;
+    box-shadow: 2px 2px 0 var(--gold);
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; border: none; max-width: 100%; }
+    .page::before { display: none; }
+    .section-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-row">
+      <div>
+        <div class="header-badge">📊 Gleichsetzungsverfahren · Std. 4</div>
+        <h1>Gleichsetzungsverfahren<br><span>Einstiegsbeispiel</span></h1>
+      </div>
+      <div class="stunden-badge">📖 Erarbeitung</div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="content">
+
+    <!-- HINWEIS -->
+    <div class="ws-hinweis">
+      📘 Lies die Schritte anschließend in deinem <strong>Wissensspeicher</strong> nach → Abschnitt „Gleichsetzungsverfahren"
+    </div>
+
+    <!-- ANKNÜPFUNG -->
+    <div class="ankn-box">
+      📐 Dieses LGS kennst du schon aus Stunde 2 – du hast S(4|2) graphisch abgelesen. Aber was wenn der Schnittpunkt <strong>nicht genau auf dem Gitter liegt</strong>? Dann brauchen wir ein algebraisches Verfahren!
+    </div>
+
+    <!-- LGS – immer sichtbar -->
+    <div class="lgs-box">
+      <div class="lgs-label">Gegeben</div>
+      <div class="lgs-sys">I &nbsp;&nbsp;x + 4y = 12<br>II &nbsp;−x + 2y = 0</div>
+    </div>
+
+    <!-- 1. UMFORMUNG – aufklappbar -->
+    <div>
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <span class="toggle-icon">▼</span>
+        Voraussetzung: Beide Gleichungen nach y umformen
+      </button>
+      <div class="section-body">
+        <div class="umform-grid">
+          <div class="umform-box I">
+            <div class="umform-label I">Gleichung I</div>
+            x + 4y = 12<br>
+            4y = −x + 12<br>
+            y = −¼x + 3<br>
+            <span class="result-chip I">y = −¼x + 3</span><br>
+            <span style="font-size:11px; color:var(--navy);">m = −¼ &nbsp;|&nbsp; t = 3</span>
+          </div>
+          <div class="umform-box II">
+            <div class="umform-label II">Gleichung II</div>
+            −x + 2y = 0<br>
+            2y = x<br>
+            y = ½x<br>
+            <span class="result-chip II">y = ½x</span><br>
+            <span style="font-size:11px; color:var(--navy);">m = ½ &nbsp;|&nbsp; t = 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SCHRITTE – aufklappbar -->
+    <div>
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <span class="toggle-icon">▼</span>
+        Schritte 1–4
+      </button>
+      <div class="section-body">
+
+        <div class="voraussetzung">
+          <strong>Voraussetzung:</strong> Beide Gleichungen sind nach y aufgelöst:<br>
+          I: <code class="ic">y = −¼x + 3</code> &nbsp;&nbsp; II: <code class="ic">y = ½x</code>
+        </div>
+
+        <div class="step-block">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <strong>Rechte Seiten gleichsetzen:</strong><br>
+            <code class="ic">−¼x + 3 = ½x</code>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <strong>Nach x auflösen:</strong><br>
+            <code class="ic">3 = ½x + ¼x</code><br>
+            <code class="ic">3 = ¾x</code><br>
+            <code class="ic">x = 3 · 4/3 = 4</code>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <strong>x in eine der Gleichungen einsetzen</strong> (hier Gl. II):<br>
+            <code class="ic">y = ½ · 4 = 2</code>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <span class="step-num">4</span>
+          <div class="step-content">
+            <strong>Lösung: x = 4, y = 2</strong><br>
+            <div class="loesung-chip">S(4 | 2) &nbsp;→&nbsp; L = {(4 | 2)}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. KOORDINATENSYSTEM – aufklappbar -->
+    <div>
+      <button class="section-toggle" onclick="toggleSection(this)">
+        <span class="toggle-icon">▼</span>
+        Zur Erinnerung: Koordinatensystem
+      </button>
+      <div class="section-body">
+        <svg viewBox="0 0 260 165" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace">
+          <!-- Ursprung SVG(35,125), Maßstab 25px/Einheit, x:-1..8, y:-1..4 -->
+          <g stroke="#D4E8EE" stroke-width="0.8">
+            <line x1="10"  y1="25"  x2="245" y2="25"/>
+            <line x1="10"  y1="50"  x2="245" y2="50"/>
+            <line x1="10"  y1="75"  x2="245" y2="75"/>
+            <line x1="10"  y1="100" x2="245" y2="100"/>
+            <line x1="10"  y1="125" x2="245" y2="125"/>
+            <line x1="10"  y1="150" x2="245" y2="150"/>
+            <line x1="10"  y1="10"  x2="10"  y2="155"/>
+            <line x1="35"  y1="10"  x2="35"  y2="155"/>
+            <line x1="60"  y1="10"  x2="60"  y2="155"/>
+            <line x1="85"  y1="10"  x2="85"  y2="155"/>
+            <line x1="110" y1="10"  x2="110" y2="155"/>
+            <line x1="135" y1="10"  x2="135" y2="155"/>
+            <line x1="160" y1="10"  x2="160" y2="155"/>
+            <line x1="185" y1="10"  x2="185" y2="155"/>
+            <line x1="210" y1="10"  x2="210" y2="155"/>
+            <line x1="235" y1="10"  x2="235" y2="155"/>
+          </g>
+          <!-- Achsen -->
+          <line x1="10" y1="125" x2="245" y2="125" stroke="#B0BEC5" stroke-width="1.5"/>
+          <line x1="35" y1="10"  x2="35"  y2="155" stroke="#B0BEC5" stroke-width="1.5"/>
+          <polygon points="245,122 251,125 245,128" fill="#B0BEC5"/>
+          <polygon points="32,10 35,4 38,10" fill="#B0BEC5"/>
+          <text x="248" y="129" font-size="10" fill="#B0BEC5">x</text>
+          <text x="39"  y="9"   font-size="10" fill="#B0BEC5">y</text>
+          <!-- Ticks x -->
+          <line x1="60"  y1="122" x2="60"  y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="85"  y1="122" x2="85"  y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="110" y1="122" x2="110" y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="135" y1="122" x2="135" y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="160" y1="122" x2="160" y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="185" y1="122" x2="185" y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="210" y1="122" x2="210" y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="10"  y1="122" x2="10"  y2="128" stroke="#B0BEC5" stroke-width="1"/>
+          <text x="59"  y="138" font-size="9" fill="#5a7080" text-anchor="middle">1</text>
+          <text x="84"  y="138" font-size="9" fill="#5a7080" text-anchor="middle">2</text>
+          <text x="109" y="138" font-size="9" fill="#5a7080" text-anchor="middle">3</text>
+          <text x="134" y="138" font-size="9" fill="#5a7080" text-anchor="middle">4</text>
+          <text x="159" y="138" font-size="9" fill="#5a7080" text-anchor="middle">5</text>
+          <text x="184" y="138" font-size="9" fill="#5a7080" text-anchor="middle">6</text>
+          <text x="209" y="138" font-size="9" fill="#5a7080" text-anchor="middle">7</text>
+          <text x="9"   y="138" font-size="9" fill="#5a7080" text-anchor="middle">-1</text>
+          <!-- Ticks y -->
+          <line x1="32" y1="100" x2="38" y2="100" stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="32" y1="75"  x2="38" y2="75"  stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="32" y1="50"  x2="38" y2="50"  stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="32" y1="25"  x2="38" y2="25"  stroke="#B0BEC5" stroke-width="1"/>
+          <line x1="32" y1="150" x2="38" y2="150" stroke="#B0BEC5" stroke-width="1"/>
+          <text x="26" y="103" font-size="9" fill="#5a7080" text-anchor="middle">1</text>
+          <text x="26" y="78"  font-size="9" fill="#5a7080" text-anchor="middle">2</text>
+          <text x="26" y="53"  font-size="9" fill="#5a7080" text-anchor="middle">3</text>
+          <text x="26" y="28"  font-size="9" fill="#5a7080" text-anchor="middle">4</text>
+          <text x="24" y="153" font-size="9" fill="#5a7080" text-anchor="middle">-1</text>
+          <!-- Gerade I: y = −¼x + 3 → SVG_y = 125 − 25*(−¼x+3) = 50 + 6.25x -->
+          <!-- x=−1→(10,43.75), x=8→(235,100) -->
+          <line x1="10" y1="44" x2="235" y2="100" stroke="#4A9BB5" stroke-width="2.5"/>
+          <text x="237" y="97" font-size="12" fill="#4A9BB5" font-weight="bold" font-family="Nunito,sans-serif">I</text>
+          <!-- Gerade II: y = ½x → SVG_y = 125 − 12.5x -->
+          <!-- x=0→(35,125), x=7→(210,37.5) -->
+          <line x1="10" y1="137" x2="215" y2="38" stroke="#5AAEC8" stroke-width="2.5"/>
+          <text x="217" y="34" font-size="12" fill="#5AAEC8" font-weight="bold" font-family="Nunito,sans-serif">II</text>
+          <!-- Startpunkte -->
+          <circle cx="35" cy="50" r="4" fill="white" stroke="#4A9BB5" stroke-width="2"/>
+          <text x="40" y="46" font-size="9" fill="#4A9BB5" font-family="Nunito,sans-serif">(0|3)</text>
+          <circle cx="35" cy="125" r="4" fill="white" stroke="#5AAEC8" stroke-width="2"/>
+          <text x="40" y="137" font-size="9" fill="#5AAEC8" font-family="Nunito,sans-serif">(0|0)</text>
+          <!-- Schnittpunkt S(4|2): SVG_x=135, SVG_y=75 -->
+          <circle cx="135" cy="75" r="7" fill="#F2C94C" stroke="#1B3D50" stroke-width="2"/>
+          <text x="143" y="68" font-size="11" fill="#1B3D50" font-weight="bold" font-family="Nunito,sans-serif">S(4|2)</text>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSection(btn) {
+  btn.classList.toggle('active');
+  const body = btn.nextElementSibling;
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lehrerübersicht – M8.6 LGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--navy);
+    padding: 40px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(168,212,226,0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .blob { position: absolute; border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%; opacity: 0.10; pointer-events: none; }
+  .blob1 { width:180px; height:180px; background:var(--yellow); top:-50px; left:-30px; }
+  .blob2 { width:130px; height:130px; background:var(--bluegr); bottom:-30px; right:50px; }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .hero-klass {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.12);
+    border: 1.5px solid var(--yellow);
+    border-radius: 6px;
+    padding: 3px 14px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span { color: var(--yellow); }
+  .hero-sub { font-size: 14px; color: var(--lblue); max-width: 480px; margin: 0 auto; line-height: 1.6; }
+
+  .stripe { height: 6px; background: linear-gradient(90deg, var(--yellow) 0%, var(--bluegr) 50%, var(--lblue) 100%); }
+
+  .main { background: var(--vlblue); padding: 32px 20px 60px; min-height: 100vh; }
+  .container { max-width: 860px; margin: 0 auto; }
+
+  /* SECTION LABEL */
+  .sec-label {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--bluegr) 0, var(--bluegr) 6px, transparent 6px, transparent 12px);
+  }
+
+  .section { margin-bottom: 28px; }
+
+  /* CARDS */
+  .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+
+  .mat-card {
+    background: var(--paper);
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--navy);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  .mat-card:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--navy); }
+
+  .mat-card-top {
+    padding: 14px 16px 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mat-card-top::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .mat-icon { font-size: 26px; position: relative; z-index: 1; }
+  .mat-title { font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; color: white; line-height: 1.2; position: relative; z-index: 1; }
+  .mat-badge { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 1px 8px; color: white; display: inline-block; position: relative; z-index: 1; }
+
+  .mat-card-body { padding: 12px 16px 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; background: white; }
+  .mat-desc { font-size: 12px; line-height: 1.55; color: #3a5060; flex: 1; }
+
+  .mat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 2px solid var(--navy);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--navy);
+    background: var(--yellow);
+    box-shadow: 2px 2px 0 var(--navy);
+    text-decoration: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .mat-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--navy); }
+
+  /* STUNDENVERTEILUNG BOX */
+  .sv-box {
+    background: var(--navy);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 5px 5px 0 var(--gold);
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .sv-header { padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+  .sv-title { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--yellow); }
+
+  .sv-body { background: var(--paper); padding: 16px 20px; }
+
+  .sv-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--navy);
+    box-shadow: 3px 3px 0 var(--steel);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .sv-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--steel); }
+  .sv-btn-icon { font-size: 26px; flex-shrink: 0; }
+  .sv-btn-text strong { display: block; font-size: 15px; font-weight: 800; }
+  .sv-btn-text span { font-size: 12px; color: #4a6070; }
+  .sv-btn-arrow { margin-left: auto; font-size: 18px; color: var(--steel); }
+
+  .footer { background: var(--navy); padding: 18px 24px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.5px; }
+  .footer span { color: var(--yellow); }
+
+  @media (max-width: 500px) { .cards-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="hero-inner">
+    <div class="hero-klass">Lehrerbereich · M8.6</div>
+    <h1>Unterrichtsplanung<br><span>Lineare Gleichungssysteme</span></h1>
+    <p class="hero-sub">Alle Planungsdokumente für die Unterrichtssequenz auf einen Blick.</p>
+  </div>
+</div>
+
+<div class="stripe"></div>
+
+<div class="main">
+<div class="container">
+
+  <!-- STUNDENVERTEILUNG -->
+  <div class="sv-box">
+    <div class="sv-header">
+      <span style="font-size:26px;">📅</span>
+      <span class="sv-title">Stundenverteilung – Überblick</span>
+    </div>
+    <div class="sv-body">
+      <a class="sv-btn" href="Stundenverteilung_M8_6_LGS.html" target="_blank">
+        <span class="sv-btn-icon">🗓️</span>
+        <span class="sv-btn-text">
+          <strong>Stundenverteilung M8.6</strong>
+          <span>10 Stunden · 4 Phasen: Grundlagen, Lösungsverfahren, Anwendung, Sicherung</span>
+        </span>
+        <span class="sv-btn-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- STUNDENVERLAUFSPLÄNE -->
+  <div class="section">
+    <div class="sec-label">📋 Stundenverlaufspläne</div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--bluegr)">
+          <span class="mat-icon">📋</span>
+          <div class="mat-title">Stunde 1</div>
+          <span class="mat-badge">Lineare Gleichungen mit 2 Variablen</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">HA-Verbesserung · Einstieg Skilager · Erarbeitung AB · Sicherung UG · Übung PA · HA: S.142/4a,c,f</p>
+          <a class="mat-btn" href="Stundenverlauf_Std1_LGS.html" target="_blank">📋 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--bluegr)">
+          <span class="mat-icon">📋</span>
+          <div class="mat-title">Stunde 2</div>
+          <span class="mat-badge">LGS & Graphisches Verfahren</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">HA-Verbesserung · AB Auftrag 5 · LGS-Begriff · Graphisches Verfahren · GeoGebra · HA: S.143/6a,7a,8b</p>
+          <a class="mat-btn" href="Stundenverlauf_Std2_LGS.html" target="_blank">📋 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--bluegr)">
+          <span class="mat-icon">📋</span>
+          <div class="mat-title">Stunde 3</div>
+          <span class="mat-badge">Lösbarkeit – Die 3 Fälle</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">HA-Verbesserung · Impuls Stifte · GeoGebra-Applet · Wissensspeicher · S.145/16 & S.144/12d · HA: S.144/11</p>
+          <a class="mat-btn" href="Stundenverlauf_Std3_LGS.html" target="_blank">📋 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">📋</span>
+          <div class="mat-title">Stunde 4</div>
+          <span class="mat-badge">Gleichsetzungsverfahren</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">HA-Verbesserung · Einstiegsbeispiel · Schritte 1–4 · Wissensspeicher · Partnerarbeit · HA: S.149/9a, S.151/19</p>
+          <a class="mat-btn" href="Stundenverlauf_Std4_LGS.html" target="_blank">📋 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">📋</span>
+          <div class="mat-title">Stunde 5</div>
+          <span class="mat-badge">Einsetzungs- & Additionsverfahren</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">HA-Verbesserung · Expertenkarten · Erklärphase · Partnerblatt · HA: S.149/5b,6c · S.154/1a,2c</p>
+          <a class="mat-btn" href="Stundenverlauf_Std5_LGS.html" target="_blank">📋 Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEITERE MATERIALIEN -->
+  <div class="section">
+    <div class="sec-label">📦 Weitere Materialien</div>
+    <div class="cards-row">
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:#A8D4E2">
+          <span class="mat-icon">📝</span>
+          <div class="mat-title">AB Lineare Gleichungen<br>Stunden 1 & 2</div>
+          <span class="mat-badge">Stunden 1 & 2 · Word</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Editierbare Word-Version des Skilager-AB</p>
+          <a class="mat-btn" href="M_8_6_1_AB_Lineare_Gleichungen_mit_2_Variablen.docx" target="_blank">📄 Herunterladen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">📱</span>
+          <div class="mat-title">QR-Karte GeoGebra<br>Stunde 2</div>
+          <span class="mat-badge">Stunde 2 · Graphisches Verfahren</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Ausdruckfertige QR-Karte für das GeoGebra-Applet zum graphischen Verfahren</p>
+          <a class="mat-btn" href="QR_Karte_GeoGebra_Std2.html" target="_blank">📱 Öffnen →</a>
+        </div>
+      </div>
+
+      <div class="mat-card">
+        <div class="mat-card-top" style="background:var(--blue)">
+          <span class="mat-icon">📱</span>
+          <div class="mat-title">QR-Karte GeoGebra<br>Stunde 3</div>
+          <span class="mat-badge">Stunde 3 · Lösbarkeit</span>
+        </div>
+        <div class="mat-card-body">
+          <p class="mat-desc">Ausdruckfertige QR-Karte für das GeoGebra-Applet zur Lösbarkeit – Die 3 Fälle</p>
+          <a class="mat-btn" href="QR_Karte_GeoGebra_Std3.html" target="_blank">📱 Öffnen →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  Mathematik · Jahrgangsstufe 8 · <span>M8.6 Lineare Gleichungssysteme</span> · Lehrerbereich
+</div>
+<div style="text-align:center; padding: 14px; background: var(--navy);">
+  <a href="index.html" style="color:rgba(255,255,255,0.4); font-family:'Nunito',sans-serif; font-size:11px; text-decoration:none; border:1px solid rgba(255,255,255,0.2); padding: 4px 12px; border-radius:20px; letter-spacing:0.5px;">← Schülerbereich</a>
+</div>
+
+</body>
+</html>
