@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonusaufgaben – Checkliste M8.6</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1B3D50;--bluegr:#5AAEC8;--blue:#4A9BB5;--yellow:#F2C94C;--gold:#C8962A;
+    --steel:#B0BEC5;--lblue:#A8D4E2;--vlblue:#D4E8EE;--paper:#F7FBFD;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:white; font-family:'Nunito',sans-serif; color:var(--navy); padding:20px; }
+
+  .page {
+    max-width:680px;
+    margin:0 auto;
+    border:3px solid var(--navy);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:4px 4px 0 var(--steel);
+  }
+
+  .header {
+    background:var(--navy);
+    padding:16px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .header::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:radial-gradient(circle, rgba(168,212,226,0.12) 1px, transparent 1px);
+    background-size:18px 18px;
+  }
+
+  .header-inner { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+
+  .header h1 {
+    font-family:'Caveat',cursive;
+    font-size:24px;
+    font-weight:700;
+    color:white;
+    line-height:1.2;
+  }
+
+  .header h1 span { color:var(--yellow); }
+
+  .name-box {
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.3);
+    border-radius:8px;
+    padding:6px 12px;
+    font-size:12px;
+    color:var(--lblue);
+    font-family:'JetBrains Mono',monospace;
+    min-width:180px;
+    text-align:center;
+  }
+
+  .stripe { height:4px; background:linear-gradient(90deg,var(--yellow),var(--bluegr),var(--lblue)); }
+
+  .body { padding:14px 18px 20px; }
+
+  .hint {
+    font-size:11.5px;
+    color:#4a6070;
+    font-style:italic;
+    margin-bottom:14px;
+    line-height:1.5;
+  }
+
+  table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+  }
+
+  thead tr {
+    background:var(--vlblue);
+  }
+
+  thead th {
+    padding:8px 10px;
+    text-align:left;
+    font-weight:800;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--navy);
+    border-bottom:2px solid var(--lblue);
+  }
+
+  tbody tr {
+    border-bottom:1.5px solid var(--vlblue);
+  }
+
+  tbody tr:last-child { border-bottom:none; }
+
+  tbody tr:nth-child(even) { background:#f7fbfd; }
+
+  td { padding:9px 10px; vertical-align:middle; line-height:1.4; }
+
+  .std-cell {
+    font-family:'Caveat',cursive;
+    font-size:18px;
+    font-weight:700;
+    color:var(--navy);
+    white-space:nowrap;
+    width:55px;
+  }
+
+  .name-cell { font-weight:700; color:var(--navy); }
+  .sub-cell { font-size:11px; color:#4a6070; display:block; font-weight:400; }
+
+  .check-cell { width:32px; text-align:center; }
+
+  .checkbox {
+    width:18px; height:18px;
+    border:2px solid var(--navy);
+    border-radius:4px;
+    display:inline-block;
+  }
+
+  .challenge-chip {
+    font-size:9px;
+    font-weight:800;
+    color:var(--gold);
+    border:1.5px solid var(--gold);
+    border-radius:20px;
+    padding:1px 5px;
+    display:inline-block;
+    margin-left:4px;
+    vertical-align:middle;
+  }
+
+  .notiz-cell {
+    border-bottom:1px solid var(--steel);
+    min-width:160px;
+    height:16px;
+  }
+
+  .footer {
+    background:var(--vlblue);
+    padding:8px 18px;
+    font-size:10.5px;
+    color:#4a6070;
+    font-style:italic;
+    border-top:1.5px solid var(--lblue);
+  }
+
+  @media print {
+    body { padding:0; background:white; }
+    .page { box-shadow:none; border-radius:0; border:2px solid var(--navy); max-width:100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-inner">
+      <h1>⭐ Bonusaufgaben<br><span>M8.6 Lineare Gleichungssysteme</span></h1>
+      <div class="name-box">Name: ___________________</div>
+    </div>
+  </div>
+
+  <div class="stripe"></div>
+
+  <div class="body">
+    <p class="hint">Hake ab, welche Bonusaufgaben du bearbeitet hast. Nutze die Notizspalte für kurze Bemerkungen – z. B. „war leicht", „Teilaufgabe c noch offen" oder „Frage an Lehrkraft".</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Std.</th>
+          <th>Bonusaufgabe</th>
+          <th class="check-cell">✓</th>
+          <th class="check-cell">🚀</th>
+          <th>Meine Notiz</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="std-cell">1</td>
+          <td class="name-cell">Allgemeine Form
+            <span class="sub-cell">LGS in allgemeine Form bringen</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">2</td>
+          <td class="name-cell">Graphisch rückwärts
+            <span class="sub-cell">LGS aus Schnittpunkt konstruieren</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">3</td>
+          <td class="name-cell">Lösbarkeit
+            <span class="sub-cell">Die 3 Fälle erkennen und begründen</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">4</td>
+          <td class="name-cell">Fehlersuche
+            <span class="sub-cell">Problembehaftete Umformungen erkennen</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">5</td>
+          <td class="name-cell">Eigenes LGS
+            <span class="sub-cell">LGS für S(2|3) erfinden</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">6</td>
+          <td class="name-cell">Alle Verfahren
+            <span class="sub-cell">Ein LGS mit allen drei Verfahren lösen</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+        <tr>
+          <td class="std-cell">7</td>
+          <td class="name-cell">Geraden & Schnittpunkte
+            <span class="sub-cell">S. 151/19 · S. 151/20</span>
+          </td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="check-cell"><span class="checkbox"></span></td>
+          <td class="notiz-cell"></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    💡 Alle Bonusaufgaben findest du im digitalen Schülerbereich. Die Challenge ist jeweils die schwierigste Teilaufgabe.
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonusaufgabe – Std. 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1B3D50;--bluegr:#5AAEC8;--blue:#4A9BB5;--yellow:#F2C94C;--gold:#C8962A;
+    --steel:#B0BEC5;--lblue:#A8D4E2;--vlblue:#D4E8EE;--paper:#F7FBFD;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--vlblue); font-family:'Nunito',sans-serif; color:var(--navy); padding:28px 16px 60px; }
+  .page { max-width:700px; margin:0 auto; background:var(--paper); border-radius:12px; border:3px solid var(--navy); box-shadow:6px 6px 0 var(--navy); overflow:hidden; position:relative; }
+  .page::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle, var(--lblue) 1px, transparent 1px); background-size:22px 22px; opacity:0.45; pointer-events:none; z-index:0; }
+  .header { background:var(--navy); padding:22px 28px 18px; position:relative; overflow:hidden; z-index:1; }
+  .header-blob { position:absolute; top:-20px; right:40px; width:100px; height:100px; background:var(--yellow); border-radius:54% 46% 60% 40%/40% 55% 45% 60%; opacity:0.15; }
+  .header-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; position:relative; z-index:2; }
+  .header-badge { font-family:'Caveat',cursive; font-size:14px; font-weight:700; color:var(--yellow); background:rgba(242,201,76,0.15); border:2px solid var(--yellow); border-radius:6px; padding:2px 10px; margin-bottom:6px; display:inline-block; }
+  .header h1 { font-family:'Caveat',cursive; font-size:28px; font-weight:700; color:white; line-height:1.2; }
+  .header h1 span { color:var(--yellow); }
+  .bonus-badge { background:var(--yellow); color:var(--navy); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:800; border:2px solid var(--gold); box-shadow:2px 2px 0 var(--gold); flex-shrink:0; align-self:flex-start; }
+  .stripe { height:5px; background:linear-gradient(90deg,var(--yellow),var(--bluegr),var(--lblue)); }
+  .content { padding:22px 26px 30px; position:relative; z-index:1; display:flex; flex-direction:column; gap:20px; }
+
+  /* LGS Box */
+  .lgs-box { background:white; border:2.5px solid var(--navy); border-radius:10px; padding:16px 18px; box-shadow:3px 3px 0 var(--steel); }
+  .lgs-label { font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--gold); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .lgs-sys { font-family:'JetBrains Mono',monospace; font-size:15px; background:var(--vlblue); border:1.5px solid var(--lblue); border-radius:8px; padding:8px 16px; line-height:2.3; color:var(--navy); display:inline-block; }
+
+  /* Aufgaben */
+  .aufgabe { background:white; border:2.5px solid var(--navy); border-radius:10px; box-shadow:3px 3px 0 var(--steel); overflow:hidden; }
+  .aufgabe-header { display:flex; align-items:center; gap:12px; padding:10px 16px; background:var(--vlblue); border-bottom:2px solid var(--lblue); }
+  .aufgabe-letter { font-family:'Caveat',cursive; font-size:26px; font-weight:700; color:var(--navy); flex-shrink:0; }
+  .aufgabe-title { font-weight:800; font-size:13.5px; color:var(--navy); }
+  .verfahren-badge { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; padding:2px 8px; border-radius:20px; border:1.5px solid currentColor; margin-left:auto; flex-shrink:0; }
+  .v-g { color:#2e7d52; background:#e8f8f0; }
+  .v-e { color:var(--blue); background:var(--vlblue); }
+  .v-a { color:var(--gold); background:#fff8e0; }
+
+  .aufgabe-body { padding:14px 16px; font-size:13px; line-height:1.7; color:#2a4050; display:flex; flex-direction:column; gap:8px; }
+  .work-line { border-bottom:1.5px solid var(--steel); min-height:24px; }
+
+  code.ic { font-family:'JetBrains Mono',monospace; font-size:11.5px; background:var(--vlblue); border:1px solid var(--lblue); border-radius:4px; padding:1px 5px; display:inline-block; }
+
+  .loesung-toggle { width:100%; background:none; border:1.5px solid var(--blue); border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:8px; padding:5px 10px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; color:var(--blue); text-align:left; transition:background 0.15s; }
+  .loesung-toggle:hover { background:var(--vlblue); }
+  .l-arrow { margin-left:auto; font-size:11px; transition:transform 0.2s; }
+  .loesung-toggle.active .l-arrow { transform:rotate(180deg); }
+  .loesung-body { display:none; margin-top:6px; padding:10px 12px; background:var(--vlblue); border-radius:6px; border-left:3px solid var(--blue); font-size:12.5px; line-height:1.75; }
+  .loesung-body.open { display:block; }
+
+  /* Challenge */
+  .challenge-box { background:var(--navy); border:3px solid var(--navy); border-radius:10px; overflow:hidden; box-shadow:4px 4px 0 var(--gold); }
+  .challenge-header { padding:12px 18px; display:flex; align-items:center; gap:12px; position:relative; overflow:hidden; }
+  .challenge-header::after { content:'🚀'; position:absolute; right:16px; font-size:40px; opacity:0.2; }
+  .challenge-badge { background:var(--yellow); color:var(--navy); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:2px 10px; border-radius:20px; border:2px solid var(--gold); }
+  .challenge-title { font-family:'Caveat',cursive; font-size:22px; font-weight:700; color:var(--yellow); }
+  .challenge-body { background:#fffbea; padding:14px 18px; display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:1.7; color:#5a3e00; }
+  .challenge-lgs { font-family:'JetBrains Mono',monospace; font-size:13px; background:white; border:2px solid var(--gold); border-radius:8px; padding:8px 14px; line-height:2.2; color:var(--navy); display:inline-block; margin:4px 0; box-shadow:2px 2px 0 var(--gold); }
+  .c-step { font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--gold); margin-top:6px; margin-bottom:2px; }
+  .c-btn { width:100%; background:none; border:1.5px solid var(--gold); border-radius:6px; cursor:pointer; display:flex; align-items:center; gap:8px; padding:5px 10px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; color:var(--gold); text-align:left; margin-top:6px; }
+  .c-btn:hover { background:#fff3cc; }
+  .c-arrow { margin-left:auto; font-size:11px; transition:transform 0.2s; }
+  .c-btn.active .c-arrow { transform:rotate(180deg); }
+  .c-body { display:none; padding:10px 12px; background:white; border-radius:6px; border-left:3px solid var(--gold); font-size:12.5px; line-height:1.75; color:#5a3e00; margin-top:4px; }
+  .c-body.open { display:block; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-blob"></div>
+    <div class="header-row">
+      <div>
+        <div class="header-badge">⭐ Bonusaufgabe · Std. 6</div>
+        <h1>Alle Verfahren –<br><span>ein LGS</span></h1>
+      </div>
+      <div class="bonus-badge">🎯 Für Schnelle</div>
+    </div>
+  </div>
+  <div class="stripe"></div>
+  <div class="content">
+
+    <!-- LGS -->
+    <div class="lgs-box">
+      <div class="lgs-label">Gegeben – für alle drei Aufgaben</div>
+      <div class="lgs-sys">I &nbsp;&nbsp;2x + y = 7<br>II &nbsp;x − y = 2</div>
+    </div>
+
+    <!-- a) Gleichsetzungsverfahren -->
+    <div class="aufgabe">
+      <div class="aufgabe-header">
+        <span class="aufgabe-letter">a)</span>
+        <span class="aufgabe-title">Gleichsetzungsverfahren</span>
+        <span class="verfahren-badge v-g">Gleichsetzung</span>
+      </div>
+      <div class="aufgabe-body">
+        Löse das LGS mit dem Gleichsetzungsverfahren. Notiere alle Schritte.
+        <button class="loesung-toggle" onclick="tog(this)">✅ Lösung <span class="l-arrow">▼</span></button>
+        <div class="loesung-body">
+          <strong>Voraussetzung:</strong> Beide Gleichungen nach y auflösen:<br>
+          I: <code class="ic">y = −2x + 7</code> &nbsp; II: <code class="ic">y = x − 2</code><br>
+          <strong>Schritt 1:</strong> <code class="ic">−2x + 7 = x − 2 → 9 = 3x → x = 3</code><br>
+          <strong>Schritt 2:</strong> <code class="ic">y = 3 − 2 = 1</code><br>
+          <strong>Lösung:</strong> x = 3, y = 1 &nbsp;→&nbsp; <strong>L = {(3 | 1)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- b) Einsetzungsverfahren -->
+    <div class="aufgabe">
+      <div class="aufgabe-header">
+        <span class="aufgabe-letter">b)</span>
+        <span class="aufgabe-title">Einsetzungsverfahren</span>
+        <span class="verfahren-badge v-e">Einsetzung</span>
+      </div>
+      <div class="aufgabe-body">
+        Löse das LGS mit dem Einsetzungsverfahren. Notiere alle Schritte.
+        <button class="loesung-toggle" onclick="tog(this)">✅ Lösung <span class="l-arrow">▼</span></button>
+        <div class="loesung-body">
+          <strong>Voraussetzung:</strong> Gl. II nach y auflösen: <code class="ic">y = x − 2</code><br>
+          <strong>Schritt 1:</strong> In Gl. I einsetzen: <code class="ic">2x + (x − 2) = 7 → 3x = 9 → x = 3</code><br>
+          <strong>Schritt 2:</strong> <code class="ic">y = 3 − 2 = 1</code><br>
+          <strong>Lösung:</strong> x = 3, y = 1 &nbsp;→&nbsp; <strong>L = {(3 | 1)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- c) Additionsverfahren -->
+    <div class="aufgabe">
+      <div class="aufgabe-header">
+        <span class="aufgabe-letter">c)</span>
+        <span class="aufgabe-title">Additionsverfahren</span>
+        <span class="verfahren-badge v-a">Addition</span>
+      </div>
+      <div class="aufgabe-body">
+        Löse das LGS mit dem Additionsverfahren. Notiere alle Schritte.
+        <button class="loesung-toggle" onclick="tog(this)">✅ Lösung <span class="l-arrow">▼</span></button>
+        <div class="loesung-body">
+          <strong>Voraussetzung:</strong> +y und −y heben sich auf → direkt addieren.<br>
+          <strong>Schritt 1:</strong> Gleichungen addieren I + II: <code class="ic">3x = 9 → x = 3</code><br>
+          <strong>Schritt 2:</strong> x in Gl. II einsetzen: <code class="ic">3 − y = 2 → y = 1</code><br>
+          <strong>Lösung:</strong> x = 3, y = 1 &nbsp;→&nbsp; <strong>L = {(3 | 1)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Challenge -->
+    <div class="challenge-box">
+      <div class="challenge-header">
+        <div>
+          <div class="challenge-badge">Challenge</div>
+          <div class="challenge-title">🚀 Drei Geraden – ein Punkt?</div>
+        </div>
+      </div>
+      <div class="challenge-body">
+        <p>Jetzt kommt eine dritte Gleichung dazu. Berücksichtige bei der Lösung nur die Gleichungen I und II.</p>
+        <div class="challenge-lgs">I &nbsp;&nbsp;2x + y = 7<br>II &nbsp;x − y = 2<br>III &nbsp;3x + 2y = 11</div>
+
+        <div class="c-step">Schritt 1</div>
+        <p>Löse das LGS aus I und II – du hast das Ergebnis ja schon!</p>
+
+        <div class="c-step">Schritt 2</div>
+        <p>Überprüfe: Erfüllt deine Lösung auch Gleichung III? Setze x und y ein.</p>
+        <div class="c-step">Schritt 3</div>
+        <p>Was bedeutet das geometrisch? Erkläre in einem Satz, was mit den drei Geraden passiert.</p>
+        <div class="c-step">Schritt 4 – Erweiterung</div>
+        <p>Angenommen, Gleichung III lautet jetzt: <code style="font-family:'JetBrains Mono',monospace; font-size:12px; background:white; border:1.5px solid var(--gold); border-radius:4px; padding:1px 6px;">3x + 2y = 12</code><br>
+        Gib die neue Lösungsmenge des LGS (I und II) an. Was bedeutet das geometrisch?</p>
+        <button class="c-btn" onclick="togC(this)">✅ Lösung <span class="c-arrow">▼</span></button>
+        <div class="c-body">
+          <strong>Schritt 1:</strong> L = {(3 | 1)} aus I und II.<br>
+          <strong>Schritt 2:</strong> Probe in III: <code class="ic">3·3 + 2·1 = 9 + 2 = 11 ✓</code><br>
+          <strong>Schritt 3:</strong> Alle drei Geraden schneiden sich im selben Punkt S(3|1) – das ist geometrisch ein besonderer Fall, da sich drei verschiedene Geraden normalerweise nicht in einem gemeinsamen Punkt treffen müssen.<br><br>
+          <strong>Schritt 4:</strong> Die Lösung von I und II bleibt unverändert: L = {(3 | 1)}.<br>
+          Probe in neuem III: <code class="ic">3·3 + 2·1 = 11 ≠ 12</code> → S(3|1) erfüllt Gleichung III nicht.<br>
+          Für das LGS aus allen drei Gleichungen gilt daher: <strong>L = { }</strong><br>
+          Geometrisch: Die neue Gerade III läuft am Schnittpunkt von I und II vorbei – die drei Geraden haben keinen gemeinsamen Punkt.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+function tog(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
+function togC(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
+</script>
+</body>
+</html>

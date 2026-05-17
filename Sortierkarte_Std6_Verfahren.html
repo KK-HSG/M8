@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welches Verfahren? – M8.6 Sortierkarte</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1B3D50;
+    --bluegr: #5AAEC8;
+    --blue:   #4A9BB5;
+    --yellow: #F2C94C;
+    --gold:   #C8962A;
+    --steel:  #B0BEC5;
+    --lblue:  #A8D4E2;
+    --vlblue: #D4E8EE;
+    --paper:  #F7FBFD;
+    --g-color: #2e7d52;
+    --e-color: #4A9BB5;
+    --a-color: #C8962A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--vlblue);
+    font-family: 'Nunito', sans-serif;
+    color: var(--navy);
+    padding: 28px 16px 60px;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* HEADER */
+  .header-card {
+    background: var(--navy);
+    border-radius: 12px;
+    border: 3px solid var(--navy);
+    box-shadow: 6px 6px 0 var(--gold);
+    padding: 22px 28px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(168,212,226,0.1) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .header-blob {
+    position: absolute;
+    top: -20px; right: 40px;
+    width: 120px; height: 120px;
+    background: var(--yellow);
+    border-radius: 54% 46% 60% 40% / 40% 55% 45% 60%;
+    opacity: 0.12;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--yellow);
+    background: rgba(242,201,76,0.15);
+    border: 2px solid var(--yellow);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .header-card h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .header-card h1 span { color: var(--yellow); }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    height: 8px;
+    width: 200px;
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--lblue);
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LEGEND */
+  .legend {
+    background: white;
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: 3px 3px 0 var(--steel);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2.5px solid;
+    flex-shrink: 0;
+  }
+
+  /* LGS CARDS */
+  .lgs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .lgs-card {
+    background: var(--paper);
+    border: 2.5px solid var(--navy);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--steel);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .lgs-card.solved { box-shadow: 3px 3px 0 var(--gold); }
+
+  .lgs-card-header {
+    background: var(--vlblue);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1.5px solid var(--lblue);
+  }
+
+  .lgs-num {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .lgs-level {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1.5px solid currentColor;
+  }
+
+  .level-g { color: var(--g-color); background: #e8f8f0; }
+  .level-m { color: var(--e-color); background: var(--vlblue); }
+  .level-e { color: var(--a-color); background: #fff8e0; }
+
+  .lgs-sys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    background: var(--vlblue);
+    border: 1.5px solid var(--lblue);
+    border-radius: 6px;
+    padding: 8px 12px;
+    line-height: 2.1;
+    color: var(--navy);
+    margin: 12px 14px 10px;
+    display: block;
+  }
+
+  /* VERFAHREN BUTTONS */
+  .verfahren-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    padding: 0 14px 14px;
+  }
+
+  .v-btn {
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 6px 4px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    text-align: center;
+    background: white;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .v-btn.gleichsetzung { color: var(--g-color); border-color: var(--g-color); }
+  .v-btn.einsetzung   { color: var(--e-color); border-color: var(--e-color); }
+  .v-btn.addition     { color: var(--a-color); border-color: var(--a-color); }
+
+  .v-btn.gleichsetzung:hover { background: #e8f8f0; }
+  .v-btn.einsetzung:hover   { background: var(--vlblue); }
+  .v-btn.addition:hover     { background: #fff8e0; }
+
+  .v-btn.selected.gleichsetzung { background: var(--g-color); color: white; }
+  .v-btn.selected.einsetzung   { background: var(--e-color); color: white; }
+  .v-btn.selected.addition     { background: var(--a-color); color: white; }
+
+  /* BEGRÜNDUNG */
+  .begruendung {
+    display: none;
+    margin: 0 14px 14px;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    border-left: 4px solid;
+  }
+
+  .begruendung.show { display: block; }
+  .begruendung.correct { background: #e8f8f0; border-color: var(--g-color); color: #1a4a2e; }
+  .begruendung.ambiguous { background: #fffbea; border-color: var(--gold); color: #5a3e00; }
+
+  .begruendung-title {
+    font-weight: 800;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  /* FINAL SCORE */
+  .score-card {
+    display: none;
+    background: var(--navy);
+    border: 3px solid var(--navy);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 6px 6px 0 var(--gold);
+  }
+
+  .score-card.show { display: block; }
+
+  .score-title {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-bottom: 8px;
+  }
+
+  .score-sub { font-size: 14px; color: var(--lblue); }
+
+  .reset-btn {
+    margin-top: 16px;
+    background: var(--yellow);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--navy);
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--gold);
+  }
+
+  .reset-btn:hover { background: #e8b800; }
+
+  @media (max-width: 580px) {
+    .lgs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="header-blob"></div>
+    <div class="header-row">
+      <div>
+        <div class="header-badge">🔀 Sortierkarte · M8.6 · Stunde 6</div>
+        <h1>Welches <span>Verfahren?</span></h1>
+      </div>
+      <div style="position:relative;z-index:1;">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label" id="progressLabel">0 / 6 bearbeitet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGENDE -->
+  <div class="legend">
+    <span style="font-size:13px; font-weight:700; color:var(--navy); margin-right:4px;">Verfahren:</span>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--g-color); border-color:var(--g-color);"></div>
+      Gleichsetzungsverfahren
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--e-color); border-color:var(--e-color);"></div>
+      Einsetzungsverfahren
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--a-color); border-color:var(--a-color);"></div>
+      Additionsverfahren
+    </div>
+    <div style="margin-left:auto; font-size:12px; color:var(--steel); font-style:italic;">Wähle pro LGS das beste Verfahren – natürlich kannst du es mit jedem der gelernten Verfahren lösen!</div>
+  </div>
+
+  <!-- LGS KARTEN -->
+  <div class="lgs-grid" id="lgsGrid">
+
+    <!-- 1 -->
+    <div class="lgs-card" id="card-1">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 1</span>
+        <span class="lgs-level level-g">Grundlegend</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;y = 2x + 1<br>II &nbsp;y = −x + 7</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(1, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(1, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(1, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-1">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="lgs-card" id="card-2">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 2</span>
+        <span class="lgs-level level-g">Grundlegend</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;y = 3x − 2<br>II &nbsp;x + y = 6</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(2, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(2, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(2, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-2">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="lgs-card" id="card-3">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 3</span>
+        <span class="lgs-level level-m">Mittel</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;3x + y = 10<br>II &nbsp;x − y = 2</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(3, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(3, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(3, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-3">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="lgs-card" id="card-4">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 4</span>
+        <span class="lgs-level level-m">Mittel</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;2x + 3y = 12<br>II &nbsp;4x − 3y = 6</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(4, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(4, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(4, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-4">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="lgs-card" id="card-5">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 5</span>
+        <span class="lgs-level level-m">Mittel</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;y = 2x − 3<br>II &nbsp;4x − 2y = 6</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(5, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(5, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(5, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-5">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="lgs-card" id="card-6">
+      <div class="lgs-card-header">
+        <span class="lgs-num">LGS 6</span>
+        <span class="lgs-level level-e">Erweiternd</span>
+      </div>
+      <code class="lgs-sys">I &nbsp;&nbsp;3x + 2y = 11<br>II &nbsp;5x − 4y = 11</code>
+      <div class="verfahren-row">
+        <button class="v-btn gleichsetzung" onclick="select(6, 'gleichsetzung', this)">Gleichsetzung</button>
+        <button class="v-btn einsetzung"   onclick="select(6, 'einsetzung', this)">Einsetzung</button>
+        <button class="v-btn addition"     onclick="select(6, 'addition', this)">Addition</button>
+      </div>
+      <div class="begruendung" id="beg-6">
+        <div class="begruendung-title"></div>
+        <div class="begruendung-text"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-card" id="scoreCard">
+    <div class="score-title">🎉 Alle LGS bearbeitet!</div>
+    <div class="score-sub">Vergleicht eure Entscheidungen mit eurem Partner – wo habt ihr gleich gewählt? Wo unterschiedlich?</div>
+    <button class="reset-btn" onclick="resetAll()">↺ Nochmal</button>
+  </div>
+
+</div>
+
+<script>
+const data = {
+  1: {
+    best: ['gleichsetzung'],
+    ambiguous: [],
+    responses: {
+      gleichsetzung: { type: 'correct', title: '✅ Sehr gut!', text: 'Beide Gleichungen sind bereits nach y aufgelöst – das ist die Voraussetzung für das Gleichsetzungsverfahren. Einfach rechte Seiten gleichsetzen: 2x+1 = −x+7.' },
+      einsetzung:    { type: 'ambiguous', title: '🟡 Denkbar, wenn du das Gleichsetzungsverfahren als Spezialfall des Einsetzungsverfahrens betrachtest.', text: 'Beim Gleichsetzungsverfahren sind beide Gleichungen nach der selben Variable aufgelöst, beim Einsetzungsverfahren ist nur eine Gleichung nach einer Variable aufgelöst.' },
+      addition:      { type: 'ambiguous', title: '🟡 Geht, aber erfordert Umformung.', text: 'Für das Additionsverfahren müsstest du erst umformen, sodass sich eine Variable aufhebt, oder beide Gleichungen voneinander subtrahieren.' }
+    }
+  },
+  2: {
+    best: ['einsetzung'],
+    ambiguous: ['gleichsetzung'],
+    responses: {
+      gleichsetzung: { type: 'ambiguous', title: '🟡 Möglich – aber Gl. II muss erst nach y aufgelöst werden.', text: 'Aus Gl. II: y = 6−x. Dann kannst du 3x−2 = 6−x gleichsetzen. Das Einsetzungsverfahren nutzt die bereits aufgelöste Gl. I direkt.' },
+      einsetzung:    { type: 'correct', title: '✅ Gute Wahl!', text: 'Gl. I ist bereits nach y aufgelöst. Diesen Ausdruck kannst du direkt in Gl. II einsetzen: x + (3x−2) = 6. Kein zusätzlicher Schritt nötig!' },
+      addition:      { type: 'ambiguous', title: '🟡 Geht, aber erfordert Umformung.', text: 'Für das Additionsverfahren müsstest du erst umformen, sodass sich eine Variable aufhebt, oder beide Gleichungen voneinander subtrahieren.' }
+    }
+  },
+  3: {
+    best: ['addition'],
+    ambiguous: ['einsetzung'],
+    responses: {
+      gleichsetzung: { type: 'ambiguous', title: '🟡 Geht, kann aber Brüche erzeugen.', text: 'Du müsstest beide Gleichungen nach derselben Variable auflösen – dabei können Brüche entstehen.' },
+      einsetzung:    { type: 'ambiguous', title: '🟡 Funktioniert – y oder auch x lässt sich freistellen.', text: 'Aus Gl. II: y = x−2 oder x = y+2. Einsetzen in Gl. I: 3x+(x−2) = 10. Das geht! Aber das Additionsverfahren ist noch einfacher.' },
+      addition:      { type: 'correct', title: '✅ Beste Wahl!', text: 'I+II: die y-Terme (+y und −y) heben sich direkt auf! 4x = 12 → x = 3. Das Additionsverfahren erkennt man hier sofort an den entgegengesetzten Koeffizienten.' }
+    }
+  },
+  4: {
+    best: ['addition'],
+    ambiguous: [],
+    responses: {
+      gleichsetzung: { type: 'ambiguous', title: '🟡 Möglich, aber mühsam.', text: 'Beide Gleichungen müssten nach y (oder x) umgeformt werden – das erzeugt Brüche. Das Additionsverfahren ist hier viel direkter.' },
+      einsetzung:    { type: 'ambiguous', title: '🟡 Möglich – Achtung bei der Umformung!', text: 'Stelle z. B. Gl. I nach y frei: direkt jeden Term durch 3 teilen → y = 4 − ⅔x. Dann einsetzen. Aber das Additionsverfahren vermeidet Brüche komplett.' },
+      addition:      { type: 'correct', title: '✅ Sehr gut!', text: 'Die y-Koeffizienten sind +3y und −3y – sie heben sich bei I+II direkt auf! 6x = 18 → x = 3. Kein Freistellen, keine Brüche.' }
+    }
+  },
+  5: {
+    best: ['gleichsetzung', 'einsetzung'],
+    ambiguous: [],
+    responses: {
+      gleichsetzung: { type: 'ambiguous', title: '🟡 Geht, aber Umformung erforderlich.', text: 'Gl. II muss erst nach y aufgelöst werden: 4x−2y = 6 → y = 2x−3. Dann gleichsetzen: 2x−3 = 2x−3 → 0 = 0 → unendlich viele Lösungen.' },
+      einsetzung:    { type: 'correct', title: '✅ Beste Wahl!', text: 'Gl. I ist nach y aufgelöst: y = 2x−3. In Gl. II einsetzen: 4x−2(2x−3) = 6 → 0 = 0. Wahre Aussage → unendlich viele Lösungen. Überraschend?' },
+      addition:      { type: 'ambiguous', title: '🟡 Geht, aber erfordert Umformung.', text: 'Für das Additionsverfahren müsstest du erst umformen, sodass sich eine Variable aufhebt.' }
+    }
+  },
+  6: {
+    best: ['addition'],
+    ambiguous: [],
+    responses: {
+      gleichsetzung: { type: 'ambiguous', title: '🟡 Möglich, aber viel Rechenarbeit.', text: 'Beide Gleichungen nach derselben Variable umzuformen erzeugt unübersichtliche Brüche. Das Additionsverfahren ist hier eleganter.' },
+      einsetzung:    { type: 'ambiguous', title: '🟡 Möglich – Achtung bei der Umformung!', text: 'Stelle Gl. I nach y frei: direkt jeden Term durch 2 teilen → y = 11/2 − 3/2·x. Dann einsetzen. Das Additionsverfahren mit Faktor ist aber sauberer.' },
+      addition:      { type: 'correct', title: '✅ Richtig – mit einem Trick!', text: 'Gl. I · 2: 6x + 4y = 22. Jetzt I·2 + II: 11x = 33 → x = 3. Das Additionsverfahren mit Faktor ist hier klar am effektivsten – kein Bruch entsteht!' }
+    }
+  }
+};
+
+let solved = 0;
+const total = 6;
+
+function select(id, verfahren, btn) {
+  const card = document.getElementById('card-' + id);
+  const beg = document.getElementById('beg-' + id);
+  const btns = card.querySelectorAll('.v-btn');
+
+  // Deselect all, then select clicked
+  btns.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  // Show Begründung
+  const resp = data[id].responses[verfahren];
+  beg.querySelector('.begruendung-title').textContent = resp.title;
+  beg.querySelector('.begruendung-text').textContent = resp.text;
+  beg.className = 'begruendung show ' + resp.type;
+
+  // Track progress
+  if (!card.classList.contains('solved')) {
+    card.classList.add('solved');
+    solved++;
+    updateProgress();
+  }
+}
+
+function updateProgress() {
+  const pct = (solved / total) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = solved + ' / ' + total + ' bearbeitet';
+  if (solved === total) {
+    setTimeout(() => document.getElementById('scoreCard').classList.add('show'), 400);
+  }
+}
+
+function resetAll() {
+  solved = 0;
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('progressLabel').textContent = '0 / 6 bearbeitet';
+  document.getElementById('scoreCard').classList.remove('show');
+  for (let i = 1; i <= 6; i++) {
+    const card = document.getElementById('card-' + i);
+    card.classList.remove('solved');
+    card.querySelectorAll('.v-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('beg-' + i).className = 'begruendung';
+  }
+}
+</script>
+</body>
+</html>

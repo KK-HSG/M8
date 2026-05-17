@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR-Karte – LearningApps Hausaufgabe Std. 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1B3D50;--bluegr:#5AAEC8;--blue:#4A9BB5;--yellow:#F2C94C;--gold:#C8962A;
+    --steel:#B0BEC5;--lblue:#A8D4E2;--vlblue:#D4E8EE;--paper:#F7FBFD;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--vlblue); font-family:'Nunito',sans-serif; color:var(--navy); padding:40px 20px; display:flex; flex-direction:column; align-items:center; gap:24px; }
+  .hint { font-size:13px; color:#4a6070; font-family:'JetBrains Mono',monospace; letter-spacing:0.5px; }
+  .qr-card { background:var(--paper); border:3px solid var(--navy); border-radius:12px; box-shadow:5px 5px 0 var(--navy); overflow:hidden; width:480px; display:flex; flex-direction:column; }
+  .qr-header { background:var(--navy); padding:18px 20px; position:relative; overflow:hidden; }
+  .qr-header::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle, rgba(168,212,226,0.12) 1px, transparent 1px); background-size:18px 18px; }
+  .qr-badge { font-family:'Caveat',cursive; font-size:13px; font-weight:700; color:var(--yellow); background:rgba(242,201,76,0.15); border:1.5px solid var(--yellow); border-radius:6px; padding:2px 8px; display:inline-block; margin-bottom:6px; position:relative; z-index:1; }
+  .qr-title { font-family:'Caveat',cursive; font-size:24px; font-weight:700; color:white; line-height:1.2; position:relative; z-index:1; }
+  .qr-title span { color:var(--yellow); }
+  .qr-body { display:flex; gap:0; align-items:stretch; }
+  .qr-img-area { background:var(--vlblue); padding:20px; display:flex; align-items:center; justify-content:center; border-right:2px solid var(--lblue); flex-shrink:0; }
+  .qr-img-area img { width:160px; height:160px; border-radius:6px; }
+  .qr-info { padding:20px; display:flex; flex-direction:column; gap:10px; justify-content:center; flex:1; }
+  .qr-desc { font-size:13px; line-height:1.6; color:#2a4050; }
+  .qr-url { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--steel); word-break:break-all; background:var(--vlblue); border:1px solid var(--lblue); border-radius:4px; padding:4px 8px; }
+  .qr-step { display:flex; align-items:center; gap:8px; font-size:12px; color:#2a4050; }
+  .step-num { flex-shrink:0; width:20px; height:20px; background:var(--navy); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; }
+  .ha-badge { background:var(--yellow); color:var(--navy); font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; border:2px solid var(--gold); display:inline-block; margin-bottom:4px; }
+  .stripe { height:5px; background:linear-gradient(90deg,var(--yellow),var(--bluegr),var(--lblue)); }
+  @media print { body { background:white; padding:10px; } .qr-card { box-shadow:none; width:100%; max-width:480px; } }
+</style>
+</head>
+<body>
+<p class="hint">★ Hausaufgabe – QR-Karte für Stunde 7</p>
+<div class="qr-card">
+  <div class="qr-header">
+    <div class="qr-badge">📱 Hausaufgabe · Stunde 7</div>
+    <div class="qr-title">LearningApps –<br><span>Zusammenfassung LGS</span></div>
+  </div>
+  <div class="stripe"></div>
+  <div class="qr-body">
+    <div class="qr-img-area">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyCAIAAABnRsZeAAAHq0lEQVR4nO3cwW1jNxhG0TiYUlJJWkidaSGVpA8vDAPZZkUEw8v8fNI524HGT7J8wcUHfnx+ff8C0Pl1+gGAVyMrQExWgJisADFZAWKyAsRkBYjJChCTFSAmK0BMVoCYrAAxWQFisgLEZAWIyQoQkxUgJitATFaA2I+dF//2+x/Vc1zi77/+XPzrufe783PPvXZt6tPYsfPMU9+NKTu/BacVICYrQExWgJisADFZAWKyAsRkBYjJChCTFSC2tbJdO7eV3DG1hpzawp7bht65Oj23SN7xbn8LTitATFaAmKwAMVkBYrICxGQFiMkKEJMVICYrQOzgynbt3RaNa1Nb2KnP6t22v2uv97fgtALEZAWIyQoQkxUgJitATFaAmKwAMVkBYrICxMZWtk+0s+A8d1vtlJ1t6J072if+Fu7ktALEZAWIyQoQkxUgJitATFaAmKwAMVkBYrICxKxsrzC1wX3iJnXns3q3JfQUpxUgJitATFaAmKwAMVkBYrICxGQFiMkKEJMVIDa2sn3iZnFqk3pu/XnuXtid167tPPOd37o7n2qH0woQkxUgJitATFaAmKwAMVkBYrICxGQFiMkKEDu4sj23s7zTnevPO1en59a9O859Vu/2t+C0AsRkBYjJChCTFSAmK0BMVoCYrAAxWQFisgLEtla2r3cH546djea5165NPfOOOxer/hb+zWkFiMkKEJMVICYrQExWgJisADFZAWKyAsRkBYgdvMt27dxWcmobeucW9k5PfEdT39i1O5/KaQWIyQoQkxUgJitATFaAmKwAMVkBYrICxGQFiB1c2U7dz7o2tYVdsyv97z/33Cb13Hdj6vc79VfmtALEZAWIyQoQkxUgJitATFaAmKwAMVkBYrICxD4+v75/+sXnVnpTzq0h3205OvXdmPok7/yf1859251WgJisADFZAWKyAsRkBYjJChCTFSAmK0BMVoDY1sp2yp1ryCfuSne83kJ37c77d9emvhtOK0BMVoCYrAAxWQFisgLEZAWIyQoQkxUgJitA7ODK9s6t5NrUza/nnFt/7vzctXfbs965V955R04rQExWgJisADFZAWKyAsRkBYjJChCTFSAmK0Bs7C7bOxer55bBU8vRNT+3+rl3fp/Xzn0aTitATFaAmKwAMVkBYrICxGQFiMkKEJMVICYrQOzH9AP8jJ114J037D7xmdfsaCtTy+8dTitATFaAmKwAMVkBYrICxGQFiMkKEJMVICYrQOzSle251enUvvPc+nPqltyd38KdO+mpp7rz09jhtALEZAWIyQoQkxUgJitATFaAmKwAMVkBYrICxLZWtlMLzqkN7hOfased6887v1d3bnCnOK0AMVkBYrICxGQFiMkKEJMVICYrQExWgJisALFH3mV77rVTK8wnmrpF9d223TumnsppBYjJChCTFSAmK0BMVoCYrAAxWQFisgLEZAWIfXx+ff/0i19v77h25zt64h26U+/3zq3z671fpxUgJitATFaAmKwAMVkBYrICxGQFiMkKEJMVILa1sl174lL2zs3iu+2G7/R6n9W577PTChCTFSAmK0BMVoCYrAAxWQFisgLEZAWIyQoQG7vL1mv/u9d7R2tTe9Yp574bU5xWgJisADFZAWKyAsRkBYjJChCTFSAmK0BMVoDYwZXtOXfeRzu1lXy9/e45d35j1574zE4rQExWgJisADFZAWKyAsRkBYjJChCTFSAmK0Dsx7n/euom1LXXW46uPfEu2ztv573z97vj3DtyWgFisgLEZAWIyQoQkxUgJitATFaAmKwAMVkBYgdXtjum1pBTq9OpPevUO9p57dQ+e8e77XedVoCYrAAxWQFisgLEZAWIyQoQkxUgJitATFaA2Mfn1/dPv/jOTerauy1W16YWq3fuSu/c7975Wa05rQAxWQFisgLEZAWIyQoQkxUgJitATFaAmKwAsa2V7bu587ba11v3PnFFvePcWn3qTminFSAmK0BMVoCYrAAxWQFisgLEZAWIyQoQkxUg9mPnxXfe/bljvSzc2Sye+6ymbhTm384tVndMPZXTChCTFSAmK0BMVoCYrAAxWQFisgLEZAWIyQoQ27rL9s5l4dqdzzy1dn2339ETb/ad4i5b4CKyAsRkBYjJChCTFSAmK0BMVoCYrAAxWQFiW3fZ7ji3LHy9NeTUrnRqkXzu/t07byPeceddxU4rQExWgJisADFZAWKyAsRkBYjJChCTFSAmK0BsbGXL/2NnCzu17t2xszo999q1qSX0ud+R0woQkxUgJitATFaAmKwAMVkBYrICxGQFiMkKELOyfYA7l5Tn9rvnVqfn7PyOzt0KvHbu5zqtADFZAWKyAsRkBYjJChCTFSAmK0BMVoCYrACxsZXt1LJwx9SedW3n5+68ozv3u3eaugd36pN0WgFisgLEZAWIyQoQkxUgJitATFaAmKwAMVkBYgdXtlOr0ztN7R13lrI7G9w7l6NTi+SpT2Nqg+u0AsRkBYjJChCTFSAmK0BMVoCYrAAxWQFisgLEPj6/vqefAXgpTitATFaAmKwAMVkBYrICxGQFiMkKEJMVICYrQExWgJisADFZAWKyAsRkBYjJChCTFSAmK0BMVoCYrACxfwBLm/MNUHvyfAAAAABJRU5ErkJggg==" alt="QR-Code LearningApps">
+    </div>
+    <div class="qr-info">
+      <div class="ha-badge">★ Hausaufgabe</div>
+      <p class="qr-desc">Schau dir das Video an und bearbeite die Aufgaben, die dazwischen gestellt werden. Gib anschließend deine Reflexion via Teams-Aufgabe ab.</p>
+      <div class="qr-step"><span class="step-num">1</span>QR-Code scannen</div>
+      <div class="qr-step"><span class="step-num">2</span>Video schauen & Aufgaben lösen</div>
+      <div class="qr-step"><span class="step-num">3</span>Reflexion via Teams abgeben</div>
+      <p class="qr-url">https://learningapps.org/19680019</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

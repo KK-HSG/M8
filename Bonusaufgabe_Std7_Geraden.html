@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bonusaufgabe – Std. 5</title>
+<title>Bonusaufgabe – Std. 7</title>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -23,27 +23,25 @@
   .bonus-badge { background:var(--yellow); color:var(--navy); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:800; border:2px solid var(--gold); box-shadow:2px 2px 0 var(--gold); flex-shrink:0; align-self:flex-start; }
   .stripe { height:5px; background:linear-gradient(90deg,var(--yellow),var(--bluegr),var(--lblue)); }
   .content { padding:22px 26px 30px; position:relative; z-index:1; display:flex; flex-direction:column; gap:20px; }
-  .intro { background:#fffbea; border:2px dashed var(--yellow); border-radius:8px; padding:10px 14px; font-size:13px; line-height:1.6; color:#5a3e00; }
   .aufgabe { background:white; border:2.5px solid var(--navy); border-radius:10px; box-shadow:3px 3px 0 var(--steel); overflow:hidden; }
   .aufgabe-header { display:flex; align-items:center; gap:12px; padding:10px 16px; background:var(--vlblue); border-bottom:2px solid var(--lblue); }
   .aufgabe-letter { font-family:'Caveat',cursive; font-size:26px; font-weight:700; color:var(--navy); flex-shrink:0; }
   .aufgabe-title { font-weight:800; font-size:13.5px; color:var(--navy); }
-  .aufgabe-body { padding:14px 16px; font-size:13px; line-height:1.7; color:#2a4050; display:flex; flex-direction:column; gap:10px; }
-  .work-lines { display:flex; flex-direction:column; gap:0; margin-top:8px; }
-  .work-line { border-bottom:1.5px solid var(--steel); min-height:30px; }
+  .aufgabe-body { padding:14px 16px; font-size:13px; line-height:1.7; color:#2a4050; display:flex; flex-direction:column; gap:8px; }
   code.ic { font-family:'JetBrains Mono',monospace; font-size:11.5px; background:var(--vlblue); border:1px solid var(--lblue); border-radius:4px; padding:1px 5px; display:inline-block; }
-  .h-btn { width:100%; background:none; border-radius:5px; cursor:pointer; display:flex; align-items:center; gap:6px; padding:4px 8px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; text-align:left; border:1.5px solid; margin-top:4px; }
+  .h-btn { width:100%; background:none; border-radius:5px; cursor:pointer; display:flex; align-items:center; gap:6px; padding:4px 8px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; text-align:left; border:1.5px solid; margin-top:3px; }
   .h-btn.h1 { color:#2e7d52; border-color:#2e7d52; }
   .h-btn.h2 { color:var(--gold); border-color:var(--gold); }
-  .h-btn.h3 { color:var(--blue); border-color:var(--blue); }
+  .h-btn.sol { color:var(--blue); border-color:var(--blue); }
   .h-btn.h1:hover { background:#e8f8f0; }
   .h-btn.h2:hover { background:#fff8e0; }
-  .h-btn.h3:hover { background:var(--vlblue); }
+  .h-btn.sol:hover { background:var(--vlblue); }
   .h-num { flex-shrink:0; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; border:1.5px solid currentColor; }
   .h-arrow { margin-left:auto; font-size:9px; transition:transform 0.2s; }
   .h-btn.active .h-arrow { transform:rotate(180deg); }
   .h-body { display:none; font-size:12px; line-height:1.6; padding:4px 8px 6px 28px; color:#2a4050; border-left:2.5px solid var(--steel); margin-left:3px; }
   .h-body.open { display:block; }
+  .sub-label { font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:0.5px; color:var(--steel); margin-top:10px; margin-bottom:2px; }
   .challenge-box { background:var(--navy); border:3px solid var(--navy); border-radius:10px; overflow:hidden; box-shadow:4px 4px 0 var(--gold); }
   .challenge-header { padding:12px 18px; display:flex; align-items:center; gap:12px; position:relative; overflow:hidden; }
   .challenge-header::after { content:'🚀'; position:absolute; right:16px; font-size:40px; opacity:0.2; }
@@ -54,8 +52,9 @@
   .c-btn:hover { background:#fff3cc; }
   .c-arrow { margin-left:auto; font-size:11px; transition:transform 0.2s; }
   .c-btn.active .c-arrow { transform:rotate(180deg); }
-  .c-body { display:none; padding:8px 12px; background:white; border-radius:6px; border-left:3px solid var(--gold); font-size:12px; line-height:1.7; color:#5a3e00; }
+  .c-body { display:none; padding:10px 12px; background:white; border-radius:6px; border-left:3px solid var(--gold); font-size:12.5px; line-height:1.75; color:#5a3e00; margin-top:4px; }
   .c-body.open { display:block; }
+  .c-mono { font-family:'JetBrains Mono',monospace; font-size:11px; background:#fffbea; padding:1px 5px; border-radius:3px; display:inline-block; }
 </style>
 </head>
 <body>
@@ -64,8 +63,8 @@
     <div class="header-blob"></div>
     <div class="header-row">
       <div>
-        <div class="header-badge">⭐ Bonusaufgabe · Std. 5</div>
-        <h1>Eigenes LGS<br><span>erfinden & lösen</span></h1>
+        <div class="header-badge">⭐ Bonusaufgabe · Std. 7</div>
+        <h1>Geraden &<br><span>Schnittpunkte</span></h1>
       </div>
       <div class="bonus-badge">🎯 Für Schnelle</div>
     </div>
@@ -73,69 +72,84 @@
   <div class="stripe"></div>
   <div class="content">
 
-    <div class="intro">
-      🔍 Du kennst jetzt beide Verfahren. Hier kannst du zeigen, dass du sie wirklich verstanden hast – indem du selbst ein LGS erfindest!
-    </div>
-
-    <!-- a) Einsetzungsverfahren -->
+    <!-- AUFGABE -->
     <div class="aufgabe">
       <div class="aufgabe-header">
-        <span class="aufgabe-letter">a)</span>
-        <span class="aufgabe-title">Einsetzungsverfahren – Eigenes LGS</span>
+        <span class="aufgabe-letter">Aufgabe</span>
+        <span class="aufgabe-title">Geradengleichung auf 2 Arten ermitteln</span>
       </div>
       <div class="aufgabe-body">
-        Erfinde ein LGS, das S(2 | 3) als Lösung hat und sehr gut mit dem Einsetzungsverfahren gelöst werden kann, und löse es mit dem Einsetzungsverfahren.
-        <button class="h-btn h1" onclick="tog(this)"><span class="h-num">1</span>Tipp 1<span class="h-arrow">▼</span></button>
-        <div class="h-body">Starte mit einer einfachen Gleichung, die (2|3) erfüllt, z. B. <code class="ic">y = x + 1</code>, und bereits nach einer Variable aufgelöst ist. Stimmt das? 3 = 2+1 ✓</div>
-        <button class="h-btn h2" onclick="tog(this)"><span class="h-num">2</span>Tipp 2<span class="h-arrow">▼</span></button>
-        <div class="h-body">Finde eine zweite Gleichung, die (2|3) ebenfalls erfüllt, z. B. <code class="ic">x + y = 5</code>. Stimmt das? 2+3 = 5 ✓</div>
-        <button class="h-btn h3" onclick="tog(this)"><span class="h-num">3</span>Lösung<span class="h-arrow">▼</span></button>
-        <div class="h-body">Mögliches LGS: I <code class="ic">y = x + 1</code>, II <code class="ic">x + y = 5</code><br>Einsetzen: <code class="ic">x + (x+1) = 5 → 2x = 4 → x = 2 → y = 3</code><br>L = {(2 | 3)}</div>
+        <p>Gegeben sind die Punkte P(2|5) und Q(−1|−1). Ermittle die Gleichung der Geraden, die durch beide Punkte verläuft.</p>
+
+        <div class="sub-label">a) Mit einem Lösungsverfahren</div>
+        <p>Setze die Koordinaten von P und Q in <code class="ic">y = m·x + t</code> ein und löse das entstehende LGS.</p>
+
+        <button class="h-btn h1" onclick="tog(this)">💡 Tipp<span class="h-arrow">▼</span></button>
+        <div class="h-body">Setze P(2|5) ein: <code class="ic">5 = 2m + t</code> → Gleichung I.<br>Setze Q(−1|−1) ein: <code class="ic">−1 = −m + t</code> → Gleichung II.<br>Löse das LGS (m und t sind die Variablen).</div>
+
+        <button class="h-btn sol" onclick="tog(this)"><span class="h-num">✓</span>Lösung a)<span class="h-arrow">▼</span></button>
+        <div class="h-body">
+          I − II: <code class="ic">6 = 3m → m = 2</code><br>
+          In II: <code class="ic">t = −1 + 2 = 1</code><br>
+          <strong>y = 2x + 1</strong>
+        </div>
+
+        <div class="sub-label">b) Mit der Steigungsformel</div>
+        <p>Berechne m direkt mit der Steigungsformel und bestimme dann t.</p>
+
+        <button class="h-btn h1" onclick="tog(this)">💡 Tipp<span class="h-arrow">▼</span></button>
+        <div class="h-body">Steigungsformel: <code class="ic">m = (y_Q − y_P) / (x_Q − x_P)</code></div>
+
+        <button class="h-btn sol" onclick="tog(this)"><span class="h-num">✓</span>Lösung b)<span class="h-arrow">▼</span></button>
+        <div class="h-body">
+          <code class="ic">m = (−1 − 5)/(−1 − 2) = −6/(−3) = 2</code><br>
+          <code class="ic">5 = 2·2 + t → t = 1</code><br>
+          <strong>y = 2x + 1</strong>
+        </div>
+
+
       </div>
     </div>
 
-    <!-- b) Additionsverfahren -->
-    <div class="aufgabe">
-      <div class="aufgabe-header">
-        <span class="aufgabe-letter">b)</span>
-        <span class="aufgabe-title">Additionsverfahren – Eigenes LGS</span>
-      </div>
-      <div class="aufgabe-body">
-        Erfinde ein LGS, das S(2 | 3) als Lösung hat und sehr gut mit dem Additionsverfahren gelöst werden kann, und löse es mit dem Additionsverfahren.
-        <button class="h-btn h1" onclick="tog(this)"><span class="h-num">1</span>Tipp 1<span class="h-arrow">▼</span></button>
-        <div class="h-body">Finde zwei Gleichungen, die (2|3) erfüllen und bei denen sich eine Variable beim Addieren aufhebt, z. B. <code class="ic">x + y = 5</code>. Stimmt das? 2+3 = 5 ✓</div>
-        <button class="h-btn h2" onclick="tog(this)"><span class="h-num">2</span>Tipp 2<span class="h-arrow">▼</span></button>
-        <div class="h-body">Finde eine zweite Gleichung, bei der sich beim Addieren eine Variable aufhebt, z. B. <code class="ic">x − y = −1</code>. Stimmt das? 2−3 = −1 ✓</div>
-        <button class="h-btn h3" onclick="tog(this)"><span class="h-num">3</span>Lösung<span class="h-arrow">▼</span></button>
-        <div class="h-body">Mögliches LGS: I <code class="ic">x + y = 5</code>, II <code class="ic">x − y = −1</code><br>I+II: <code class="ic">2x = 4 → x = 2 → y = 3</code><br>L = {(2 | 3)}</div>
-      </div>
-    </div>
-
-    <!-- Challenge -->
+    <!-- CHALLENGE -->
     <div class="challenge-box">
       <div class="challenge-header">
         <div>
           <div class="challenge-badge">Challenge</div>
-          <div class="challenge-title">🚀 Unendlich viele Lösungen</div>
+          <div class="challenge-title">🚀 Parallelogramm</div>
         </div>
       </div>
       <div class="challenge-body">
-        <p>Ergänze die fehlenden Koeffizienten (__) so, dass das LGS <strong>unendlich viele Lösungen</strong> hat.</p>
-        <div style="font-family:'JetBrains Mono',monospace; font-size:14px; background:white; border:2px solid var(--gold); border-radius:8px; padding:10px 16px; margin:6px 0; line-height:2.4; color:#1B3D50;">
-          I &nbsp;&nbsp;2x + 3y = 12<br>
-          II &nbsp;__ x + __ y = −4
+        <p>Vier Geraden begrenzen ein Parallelogramm. Bestimme dessen Flächeninhalt rechnerisch.</p>
+
+        <div style="font-family:'JetBrains Mono',monospace; font-size:13px; background:white; border:2px solid var(--gold); border-radius:8px; padding:8px 16px; line-height:2.2; color:var(--navy); box-shadow:2px 2px 0 var(--gold); margin:2px 0;">
+          g₁: y = x + 1 &nbsp;&nbsp; g₂: y = x − 3<br>
+          g₃: y = 3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g₄: y = −1
         </div>
-        <button class="c-btn" style="border-color:#2e7d52; color:#2e7d52;" onclick="togT(this)">💡 Tipp <span class="c-arrow">▼</span></button>
-        <div class="c-body" style="border-left-color:#2e7d52;">
-          Multipliziere Gl. I mit einem geeigneten Faktor, damit die rechte Seite −4 ergibt.<br>
-          Tipp: <code style="font-family:'JetBrains Mono',monospace; font-size:11px; background:#fffbea; padding:1px 4px;">12 · (?) = −4</code>
+
+        <button class="c-btn" onclick="togC(this)">💡 Tipp 1 <span class="c-arrow">▼</span></button>
+        <div class="c-body">Da laut Angabe ein Parallelogramm vorliegt, reichen 3 Schnittpunkte. Bestimme z. B. den Schnittpunkt von g₁ und g₃, von g₂ und g₃ sowie von g₁ und g₄ – je zwei Geraden bilden ein LGS.</div>
+
+        <button class="c-btn" onclick="togC(this)">💡 Tipp 2 <span class="c-arrow">▼</span></button>
+        <div class="c-body">
+          g₁ und g₄: <span class="c-mono">x+1 = −1 → x=−2</span> → A(−2|−1)<br>
+          g₂ und g₄: <span class="c-mono">x−3 = −1 → x=2</span> → B(2|−1)<br>
+          g₂ und g₃: <span class="c-mono">x−3 = 3 → x=6</span> → C(6|3)<br>
+          g₁ und g₃: <span class="c-mono">x+1 = 3 → x=2</span> → D(2|3)
         </div>
+
+        <button class="c-btn" onclick="togC(this)">💡 Tipp 3 <span class="c-arrow">▼</span></button>
+        <div class="c-body">
+          Wähle die Grundlinie so, dass sie entlang g₃ (oder g₄) liegt. Ihre Länge ist der Abstand von C und D.<br>
+          Die Höhe ist der senkrechte Abstand zwischen g₃ und g₄. Da beide Geraden parallel zur x-Achse sind, ist der Abstand besonders einfach: <span class="c-mono">|y₃ − y₄|</span>
+        </div>
+
         <button class="c-btn" onclick="togC(this)">✅ Lösung <span class="c-arrow">▼</span></button>
         <div class="c-body">
-          Faktor: 12 · (−⅓) = −4 → I · (−⅓): <code class="ic">−⅔x − y = −4</code><br>
-          Mögliche Wahl für II: <code class="ic">−⅔x − y = −4</code>, z. B. als <code class="ic">2x + 3y = 12</code> · (−⅓)<br>
-          Additionsverfahren: I + II: <code class="ic">0 = 0</code> → wahre Aussage<br>
-          → Beide Gleichungen beschreiben <strong>dieselbe Gerade</strong> → <strong>unendlich viele Lösungen</strong>
+          Eckpunkte: A(−2|−1), B(2|−1), C(6|3), D(2|3)<br><br>
+          Grundlinie (Abstand C und D entlang g₃): <span class="c-mono">6 − 2 = 4</span><br>
+          Höhe (Abstand g₃ und g₄): <span class="c-mono">|3 − (−1)| = 4</span><br><br>
+          <strong>A = 4 · 4 = 16</strong> Flächeneinheiten²
         </div>
       </div>
     </div>
@@ -145,7 +159,6 @@
 <script>
 function tog(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
 function togC(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
-function togT(btn) { btn.classList.toggle('active'); btn.nextElementSibling.classList.toggle('open'); }
 </script>
 </body>
 </html>

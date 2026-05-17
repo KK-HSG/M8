@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR-Karte – Kahoot M8.6 LGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1B3D50;--bluegr:#5AAEC8;--blue:#4A9BB5;--yellow:#F2C94C;--gold:#C8962A;
+    --steel:#B0BEC5;--lblue:#A8D4E2;--vlblue:#D4E8EE;--paper:#F7FBFD;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--vlblue); font-family:'Nunito',sans-serif; color:var(--navy); padding:40px 20px; display:flex; flex-direction:column; align-items:center; gap:24px; }
+  .hint { font-size:13px; color:#4a6070; font-family:'JetBrains Mono',monospace; letter-spacing:0.5px; }
+  .qr-card { background:var(--paper); border:3px solid var(--navy); border-radius:12px; box-shadow:5px 5px 0 var(--navy); overflow:hidden; width:480px; display:flex; flex-direction:column; }
+  .qr-header { background:var(--navy); padding:18px 20px; position:relative; overflow:hidden; }
+  .qr-header::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle, rgba(168,212,226,0.12) 1px, transparent 1px); background-size:18px 18px; }
+  .qr-badge { font-family:'Caveat',cursive; font-size:13px; font-weight:700; color:var(--yellow); background:rgba(242,201,76,0.15); border:1.5px solid var(--yellow); border-radius:6px; padding:2px 8px; display:inline-block; margin-bottom:6px; position:relative; z-index:1; }
+  .qr-title { font-family:'Caveat',cursive; font-size:24px; font-weight:700; color:white; line-height:1.2; position:relative; z-index:1; }
+  .qr-title span { color:var(--yellow); }
+  .qr-body { display:flex; gap:0; align-items:stretch; }
+  .qr-img-area { background:var(--vlblue); padding:20px; display:flex; align-items:center; justify-content:center; border-right:2px solid var(--lblue); flex-shrink:0; }
+  .qr-img-area img { width:160px; height:160px; border-radius:6px; }
+  .qr-info { padding:20px; display:flex; flex-direction:column; gap:10px; justify-content:center; flex:1; }
+  .qr-desc { font-size:13px; line-height:1.6; color:#2a4050; }
+  .qr-url { font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--steel); word-break:break-all; background:var(--vlblue); border:1px solid var(--lblue); border-radius:4px; padding:4px 8px; }
+  .qr-step { display:flex; align-items:center; gap:8px; font-size:12px; color:#2a4050; }
+  .step-num { flex-shrink:0; width:20px; height:20px; background:var(--navy); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; }
+  .stripe { height:5px; background:linear-gradient(90deg,var(--yellow),var(--bluegr),var(--lblue)); }
+  @media print { body { background:white; padding:10px; } .qr-card { box-shadow:none; width:100%; max-width:480px; } }
+</style>
+</head>
+<body>
+<p class="hint">🔒 Lehrerbereich – nicht für Schüler</p>
+<div class="qr-card">
+  <div class="qr-header">
+    <div class="qr-badge">🎮 Lehrerbereich · Stunde 7</div>
+    <div class="qr-title">M8.6 – <span>Lineare Gleichungssysteme</span></div>
+  </div>
+  <div class="stripe"></div>
+  <div class="qr-body">
+    <div class="qr-img-area">
+      <img src="data:image/png;base64,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" alt="QR-Code Kahoot Quiz">
+    </div>
+    <div class="qr-info">
+      <p class="qr-desc">QR-Code führt direkt zum Kahoot-Quiz. Du kannst es nach Belieben anpassen. Zum Starten benötigst du einen <strong>Kahoot-Account</strong>.</p>
+      <div class="qr-step"><span class="step-num">1</span>QR-Code scannen → Kahoot öffnet sich</div>
+      <div class="qr-step"><span class="step-num">2</span>Mit Kahoot-Account anmelden</div>
+      <div class="qr-step"><span class="step-num">3</span>Quiz anpassen & starten</div>
+      <p class="qr-url">https://create.kahoot.it/share/m8-6-2-lineare-gleichungssysteme-mit-2-variablen/123e2232-f5df-4f50-bff5-304320fd873d</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
